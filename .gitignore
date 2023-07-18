@@ -1,0 +1,11 @@
+.ccls-cache/*
+.vscode/*
+object_files/*
+output
+rocket
+compile_commands.json
+
+CMakeCache.txt
+CMakeFiles/*
+Makefile
+cmake_install.cmake
