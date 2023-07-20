@@ -9,3 +9,12 @@ CMakeCache.txt
 CMakeFiles/*
 Makefile
 cmake_install.cmake
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+Debug/*
+.vs/*
+fluid-sim
+x64/*
+fluid-sim.dir/*
