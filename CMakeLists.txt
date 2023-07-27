@@ -14,13 +14,16 @@ set (X11_GLFW  ${GLFW}/posix_thread.c  ${GLFW}/x11_window.c  ${GLFW}/x11_monitor
 include_directories ( ${GLAD_INCLUDES} ${GLFW_INCLUDE} ${INCLUDES})
 
 if(WIN32)
+
 	add_executable(fluid-sim ${SRC}/main.cpp ${SRC}/shader.cpp ${INCLUDES}/glad/src/glad.c ${COMMON_GLFW} ${WIN32_GLFW} )
 	target_link_libraries(fluid-sim gdi32 assimp kernel32 user32)
+
 	set (CMAKE_CXX_FLAGS "-O3 -std=c++17")
 	add_compile_definitions(_GLFW_WIN32)
 endif (WIN32)
 
 if (UNIX)
+
     add_executable(fluid-sim  ${SRC}/main.cpp  ${SRC}/shader.cpp ${INCLUDES}/glad/src/glad.c ${COMMON_GLFW} ${X11_GLFW})
 	target_link_libraries(fluid-sim pthread dl X11 m assimp)
 	set (CMAKE_CXX_FLAGS "-std=c++17")
