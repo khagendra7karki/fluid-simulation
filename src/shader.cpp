@@ -8,8 +8,8 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     std::ifstream vShaderFile;
     std::ifstream fShaderFile;
     // ensure ifstream objects can throw exceptions:
-    vShaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
-    fShaderFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+    vShaderFile.exceptions (std::ifstream::failbit );
+    fShaderFile.exceptions (std::ifstream::failbit );
     try 
     {
         // open files
@@ -17,19 +17,28 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
         fShaderFile.open(fragmentPath);
         std::stringstream vShaderStream, fShaderStream;
         // read file's buffer contents into streams
-        vShaderStream << vShaderFile.rdbuf();
-        fShaderStream << fShaderFile.rdbuf();
+        if ( !(vShaderFile.good() && fShaderFile.good()) ){
+            std::cout<<"The fie doesn't exists "<<std::endl;
+        }
+        vShaderStream<< vShaderFile.rdbuf();
+        fShaderStream<<fShaderFile.rdbuf();
         // close file handlers
         vShaderFile.close();
         fShaderFile.close();
+
+        //append carriage return to the end of each line
+
+
         // convert stream into string
         vertexCode   = vShaderStream.str();
         fragmentCode = fShaderStream.str();
+        
     }
     catch (std::ifstream::failure& e)
     {
         std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ: " << e.what() << std::endl;
     }
+
     const char* vShaderCode = vertexCode.c_str();
     const char * fShaderCode = fragmentCode.c_str();
     // 2. compile shaders
@@ -75,6 +84,10 @@ void Shader::setInt(const std::string &name, int value) const
 void Shader::setFloat(const std::string &name, float value) const
 { 
     glUniform1f(glGetUniformLocation(ID, name.c_str()), value); 
+}
+
+void Shader::close(){
+    glDeleteProgram( ID);
 }
 
 void Shader::checkCompileErrors(unsigned int shader, std::string type)

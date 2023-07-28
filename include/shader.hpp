@@ -2,7 +2,7 @@
 #define SHADER_H
 
 #include "glad/include/glad/glad.h"
-
+#include<iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -26,6 +26,9 @@ public:
     void setInt(const std::string &name, int value) const;
     // ------------------------------------------------------------------------
     void setFloat(const std::string &name, float value) const;
+
+    //close the shader program
+    void close();
 
 private:
     // utility function for checking shader compilation/linking errors.
