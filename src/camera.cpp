@@ -8,8 +8,8 @@ Camera::Camera(int width, int height):
                                     cameraFront(0.0f, 0.0f, -1.0f),
                                     cameraPos(0.0f, 0.0f, 3.0f),
                                     cameraUp(0.0f, 1.0f, 0.0f),
-                                    cameraSpeed(0.05f),
-                                    sensitivity(0.1f),
+                                    cameraSpeed(0.03f),
+                                    sensitivity(0.08f),
                                     firstMouse( true ){}
 void Camera::change_angle(double xpos, double ypos){
     float xoffset = xpos - lastX;
@@ -24,7 +24,6 @@ void Camera::change_angle(double xpos, double ypos){
     lastX = xpos;
     lastY = ypos;
 
-    const float sensitivity = 0.1f;
 
     xoffset += sensitivity;
     yoffset += sensitivity;
@@ -33,7 +32,7 @@ void Camera::change_angle(double xpos, double ypos){
     pitch += yoffset;
 
     if( pitch > 89.0f ) pitch = 89.0f;
-    if( pitch < -89.0f ) pitch -89.0f;
+    if( pitch < -89.0f ) pitch = -89.0f;
 
 
     glm::vec3 direction;
