@@ -18,8 +18,7 @@
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #else
-#include"../include/glad/include/glad/glad.h"
-#include <GLFW/glfw3.h>
+#include "../include/glad/include/glad/glad.h"
 #endif
 
 #include <iostream>
@@ -553,12 +552,13 @@ void Sphere::buildInterleavedVertices()
         interleavedVertices.push_back(vertices[i+1]);
         interleavedVertices.push_back(vertices[i+2]);
 
-        interleavedVertices.push_back(normals[i]);
-        interleavedVertices.push_back(normals[i+1]);
-        interleavedVertices.push_back(normals[i+2]);
 
-        interleavedVertices.push_back(texCoords[j]);
-        interleavedVertices.push_back(texCoords[j+1]);
+        interleavedVertices.push_back(1.0f);
+        interleavedVertices.push_back(0.0f);
+        interleavedVertices.push_back(1.0f);
+
+        // interleavedVertices.push_back(texCoords[j]);
+        // interleavedVertices.push_back(texCoords[j+1]);
     }
 }
 

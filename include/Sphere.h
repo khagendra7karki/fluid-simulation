@@ -20,7 +20,7 @@ class Sphere
 {
 public:
     // ctor/dtor
-    Sphere(float radius=1.0f, int sectorCount=36, int stackCount=18, bool smooth=true, int up=3);
+    Sphere(float radius=1.0f, int sectorCount=18, int stackCount=9, bool smooth=true, int up=3);
     ~Sphere() {}
 
     // getters/setters

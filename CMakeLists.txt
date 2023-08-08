@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project( fluid-simulation )
+project( fluid-sim )
 set ( SRC "./src")
 set ( INCLUDES "./include")
 set ( GLAD_INCLUDES "./include/glad/include")
@@ -24,7 +24,7 @@ endif (WIN32)
 
 if (UNIX)
 
-    add_executable(fluid-sim  ${SRC}/main.cpp  ${SRC}/camera.cpp ${SRC}/sphere.cpp ${SRC}/shader.cpp ${INCLUDES}/glad/src/glad.c ${COMMON_GLFW} ${X11_GLFW})
+    add_executable(fluid-sim  ${SRC}/main.cpp  ${SRC}/camera.cpp ${SRC}/Sphere.cpp ${SRC}/shader.cpp ${INCLUDES}/glad/src/glad.c ${COMMON_GLFW} ${X11_GLFW})
 	target_link_libraries(fluid-sim pthread dl X11 m assimp)
 	set (CMAKE_CXX_FLAGS "-std=c++17")
 	add_compile_definitions(_GLFW_X11)
