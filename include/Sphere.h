@@ -15,6 +15,7 @@
 #define GEOMETRY_SPHERE_H
 
 #include <vector>
+#include <glm/glm.hpp>
 
 class Sphere
 {

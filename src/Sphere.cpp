@@ -18,13 +18,13 @@
 #ifdef __APPLE__
 #include <OpenGL/gl.h>
 #else
-#include "../include/glad/include/glad/glad.h"
+#include <glad/glad.h>
 #endif
 
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-#include "../include/Sphere.h"
+#include <Sphere.h>
 
 
 

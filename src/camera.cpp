@@ -1,4 +1,4 @@
-#include"../include/camera.hpp"
+#include<camera.hpp>
 #include<GLFW/glfw3.h>
 Camera::Camera(int width, int height):
                                     lastX( width / 2), 
