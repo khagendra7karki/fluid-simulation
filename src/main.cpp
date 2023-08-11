@@ -1,16 +1,17 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include<stb_image.h>
 
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
-#include<shader.hpp>
+#include<Shader.hpp>
 #include<iostream>
 #include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
-#include<camera.hpp>
+#include<Camera.hpp>
 #include<Sphere.h>
+#include<utility.hpp>
+#include<Fluid.hpp>
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -18,7 +19,9 @@
 
 float alphaValue = 0.1f; // Set the desired alpha value (transparency) here
 
-
+const float fluidVolume = 1000 * MASS / REST_DENSITY;
+const float particleDiameter = powf( fluidVolume, 1.0f / 3.0f ) / 10;
+const float particleRadius = particleDiameter / 2.0f;
 
 
 
@@ -62,25 +65,15 @@ void scroll_callback( GLFWwindow* window, double xoffset, double yoffset ){
 
 
 int main(){ 
-    // Sphere s;
-    // const float* vertices = s.getInterleavedVertices();
 
-    // for( int i = 0 ; i < s.getVertexCount()/3; i++){
-    //     std::cout<<vertices[i * 7]<<"\t"<<vertices[i * 7 + 1 ] << "\t"<<vertices[i*7 + 2 ]<<std::endl;
-    // }
-    Sphere s;
+    Sphere s(particleRadius, 18, 9,  3, {0.0f, 0.0f, 1.0f, 1.5f }) ;
     const float* vertices = s.getInterleavedVertices();
+    const unsigned int sizeOfVertices = s.getInterleavedVertexSize();
 
     const unsigned int* indices = s.getIndices();
     const unsigned int indicesSize = s.getIndexSize();
     const unsigned int indexCount = s.getIndexCount();
-    const int vertexCount = s.getInterleavedVertexCount();
-    const unsigned int sizeOfVertices = s.getInterleavedVertexSize();
-    std::cout<<"The size of vertices = "<< vertexCount<<"the size of indices is"<< indexCount <<std::endl;
-    // for ( int i = 3 , j = 0; j < vertexCount ; i = i + 6 ){
-    //     std::cout<<*(vertices + i) <<"\t" << *(vertices + i + 1) << "\t" << *(vertices + i + 2) <<std::endl;
-    //     j++;
-    // }
+    
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -112,8 +105,8 @@ int main(){
     }
 
     //initialize texture
-    int width, height, nrChannels;
-    unsigned char *data = stbi_load("./resources/container.jpg", &width, &height, &nrChannels, 0 );
+    // int width, height, nrChannels;
+    // unsigned char *data = stbi_load("./resources/container.jpg", &width, &height, &nrChannels, 0 );
 
 
 
@@ -128,16 +121,16 @@ int main(){
     glBindVertexArray( VAO );
     
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData( GL_ARRAY_BUFFER, sizeOfVertices , vertices, GL_STATIC_DRAW);
+    glBufferData( GL_ARRAY_BUFFER, sizeOfVertices , vertices, GL_DYNAMIC_DRAW);
     
     glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData( GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_STATIC_DRAW );
+    glBufferData( GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_DYNAMIC_DRAW );
 
 
-    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof( float ), ( void * )0 );
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), ( void * )0 );
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof( float ), ( void* )( 3 * sizeof( float )));
+    glVertexAttribPointer( 1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), ( void* )( 3 * sizeof( float )));
     glEnableVertexAttribArray(1);
 
 
@@ -147,9 +140,11 @@ int main(){
     glEnable( GL_DEPTH_TEST);
     glEnable( GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+    // glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
     
 
+    double startTime = glfwGetTime();
+    unsigned int frameRate= 0;
     while( !glfwWindowShouldClose( window ) ){
         processInput( window );
         
@@ -159,40 +154,52 @@ int main(){
         
         
         glBindBuffer( GL_ARRAY_BUFFER, 0 );
-        // glActiveTexture( GL_TEXTURE0);
-        // glBindTexture( GL_TEXTURE_2D, texture);
-        // glActiveTexture(GL_TEXTURE1);
-        // glBindTexture( GL_TEXTURE_2D, texture2 );
         
         shaderClass.use();
-        unsigned int transformLoc;
 
         view = c.lookat();
 
-        transformLoc = glGetUniformLocation( shaderClass.ID, "view");
-        glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr( view ));
-
-        transformLoc = glGetUniformLocation( shaderClass.ID, "projection");
+        shaderClass.setMat4( "view", view );
 
         projection = glm::perspective( glm::radians( c.zoom ) , 800.0f/ 600.0f, 0.1f, 100.0f );
-        glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr(projection));
+        shaderClass.setMat4( "projection", projection );
 
 
         glBindVertexArray( VAO );
-        transformLoc = glGetUniformLocation( shaderClass.ID, "model");
+        // transformLoc = glGetUniformLocation( shaderClass.ID, "model");
         
-        glUniformMatrix4fv( transformLoc, 1, GL_FALSE, glm::value_ptr(model) );
-        glDrawElements( GL_TRIANGLES,indexCount, GL_UNSIGNED_INT,0 );
+        // glDrawElements( GL_TRIANGLES,indexCount, GL_UNSIGNED_INT,0 );
         // glDrawArrays( GL_TRIANGLES, 0, vertexCount );
+
+        for( int i = 0 ; i < 10 ; i++ ){
+            glm::mat4 i_newModel(1.0f);
+            i_newModel = glm::translate( i_newModel, glm::vec3( i * particleDiameter, 0.0f, 0.0f ));
+            for( int j = 0; j < 10; j++){
+                glm::mat4 j_newModel;
+                j_newModel = glm::translate( i_newModel, glm::vec3( 0.0f,j * particleDiameter, 0.0f ));
+                for( int k = 0 ; k < 10; k++){
+                    j_newModel = glm::translate( j_newModel, glm::vec3( 0.0f, 0.0f, particleDiameter ));
+                    shaderClass.setMat4( "model", j_newModel );
+                    glDrawElements( GL_TRIANGLES,indexCount, GL_UNSIGNED_INT,0 );
+                }
+            }
+        }
 
         glfwSwapBuffers( window );
         glfwPollEvents();
+        
+        double endTime = glfwGetTime();
+        double deltaTime = endTime - startTime;
+        
+        frameRate = (unsigned int)( 1.0 / deltaTime );
+
     }
 
     glDeleteVertexArrays( 1, &VAO);
     glDeleteBuffers( 1, &VBO );
     glDeleteBuffers( 1, &EBO );
-    // glDeleteProgram( shaderProgram );
+
+
     shaderClass.close();
     glfwTerminate();
     return 0;

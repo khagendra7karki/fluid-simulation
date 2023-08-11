@@ -1,4 +1,5 @@
-#include<camera.hpp>
+// Purpose: Camera class implementation'
+#include<Camera.hpp>
 #include<GLFW/glfw3.h>
 Camera::Camera(int width, int height):
                                     lastX( width / 2), 

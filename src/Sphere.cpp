@@ -37,8 +37,9 @@ const int MIN_STACK_COUNT  = 2;
 ///////////////////////////////////////////////////////////////////////////////
 // ctor
 ///////////////////////////////////////////////////////////////////////////////
-Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up) : interleavedStride(32)
+Sphere::Sphere(float radius, int sectors, int stacks, int up, glm::vec4 color_param) : interleavedStride(32)
 {
+    color = color_param;
     set(radius, sectors, stacks, smooth, up);
 }
 
@@ -62,10 +63,7 @@ void Sphere::set(float radius, int sectors, int stacks, bool smooth, int up)
     if(up < 1 || up > 3)
         this->upAxis = 3;
 
-    if(smooth)
-        buildVerticesSmooth();
-    else
-        buildVerticesFlat();
+    buildVerticesFlat();
 }
 
 void Sphere::setRadius(float radius)
@@ -92,10 +90,7 @@ void Sphere::setSmooth(bool smooth)
         return;
 
     this->smooth = smooth;
-    if(smooth)
-        buildVerticesSmooth();
-    else
-        buildVerticesFlat();
+    buildVerticesFlat();
 }
 
 void Sphere::setUpAxis(int up)
@@ -161,95 +156,6 @@ void Sphere::printSelf() const
 
 
 
-///////////////////////////////////////////////////////////////////////////////
-// draw a sphere in VertexArray mode
-// OpenGL RC must be set before calling it
-///////////////////////////////////////////////////////////////////////////////
-void Sphere::draw() const
-{
-    // interleaved array
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glVertexPointer(3, GL_FLOAT, interleavedStride, &interleavedVertices[0]);
-    glNormalPointer(GL_FLOAT, interleavedStride, &interleavedVertices[3]);
-    glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
-
-    glDrawElements(GL_TRIANGLES, (unsigned int)indices.size(), GL_UNSIGNED_INT, indices.data());
-
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// draw lines only
-// the caller must set the line width before call this
-///////////////////////////////////////////////////////////////////////////////
-void Sphere::drawLines(const float lineColor[4]) const
-{
-    // set line colour
-    glColor4fv(lineColor);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE,   lineColor);
-
-    // draw lines with VA
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(3, GL_FLOAT, 0, vertices.data());
-
-    glDrawElements(GL_LINES, (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
-
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_TEXTURE_2D);
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// draw a sphere surfaces and lines on top of it
-// the caller must set the line width before call this
-///////////////////////////////////////////////////////////////////////////////
-void Sphere::drawWithLines(const float lineColor[4]) const
-{
-    glEnable(GL_POLYGON_OFFSET_FILL);
-    glPolygonOffset(1.0, 1.0f); // move polygon backward
-    this->draw();
-    glDisable(GL_POLYGON_OFFSET_FILL);
-
-    // draw lines with VA
-    drawLines(lineColor);
-}
-
-
-
-/*@@ FIXME: when the radius  = 0
-///////////////////////////////////////////////////////////////////////////////
-// update vertex positions only
-///////////////////////////////////////////////////////////////////////////////
-void Sphere::updateRadius()
-{
-    float scale = sqrtf(radius * radius / (vertices[0] * vertices[0] + vertices[1] * vertices[1] + vertices[2] * vertices[2]));
-
-    std::size_t i, j;
-    std::size_t count = vertices.size();
-    for(i = 0, j = 0; i < count; i += 3, j += 8)
-    {
-        vertices[i]   *= scale;
-        vertices[i+1] *= scale;
-        vertices[i+2] *= scale;
-
-        // for interleaved array
-        interleavedVertices[j]   *= scale;
-        interleavedVertices[j+1] *= scale;
-        interleavedVertices[j+2] *= scale;
-    }
-}
-*/
-
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -264,103 +170,6 @@ void Sphere::clearArrays()
     std::vector<unsigned int>().swap(lineIndices);
 }
 
-
-
-///////////////////////////////////////////////////////////////////////////////
-// build vertices of sphere with smooth shading using parametric equation
-// x = r * cos(u) * cos(v)
-// y = r * cos(u) * sin(v)
-// z = r * sin(u)
-// where u: stack(latitude) angle (-90 <= u <= 90)
-//       v: sector(longitude) angle (0 <= v <= 360)
-///////////////////////////////////////////////////////////////////////////////
-void Sphere::buildVerticesSmooth()
-{
-    const float PI = acos(-1.0f);
-
-    // clear memory of prev arrays
-    clearArrays();
-
-    float x, y, z, xy;                              // vertex position
-    float nx, ny, nz, lengthInv = 1.0f / radius;    // normal
-    float s, t;                                     // texCoord
-
-    float sectorStep = 2 * PI / sectorCount;
-    float stackStep = PI / stackCount;
-    float sectorAngle, stackAngle;
-
-    for(int i = 0; i <= stackCount; ++i)
-    {
-        stackAngle = PI / 2 - i * stackStep;        // starting from pi/2 to -pi/2
-        xy = radius * cosf(stackAngle);             // r * cos(u)
-        z = radius * sinf(stackAngle);              // r * sin(u)
-
-        // add (sectorCount+1) vertices per stack
-        // the first and last vertices have same position and normal, but different tex coords
-        for(int j = 0; j <= sectorCount; ++j)
-        {
-            sectorAngle = j * sectorStep;           // starting from 0 to 2pi
-
-            // vertex position
-            x = xy * cosf(sectorAngle);             // r * cos(u) * cos(v)
-            y = xy * sinf(sectorAngle);             // r * cos(u) * sin(v)
-            addVertex(x, y, z);
-
-            // normalized vertex normal
-            nx = x * lengthInv;
-            ny = y * lengthInv;
-            nz = z * lengthInv;
-            addNormal(nx, ny, nz);
-
-            // vertex tex coord between [0, 1]
-            s = (float)j / sectorCount;
-            t = (float)i / stackCount;
-            addTexCoord(s, t);
-        }
-    }
-
-    // indices
-    //  k1--k1+1
-    //  |  / |
-    //  | /  |
-    //  k2--k2+1
-    unsigned int k1, k2;
-    for(int i = 0; i < stackCount; ++i)
-    {
-        k1 = i * (sectorCount + 1);     // beginning of current stack
-        k2 = k1 + sectorCount + 1;      // beginning of next stack
-
-        for(int j = 0; j < sectorCount; ++j, ++k1, ++k2)
-        {
-            // 2 triangles per sector excluding 1st and last stacks
-            if(i != 0)
-            {
-                addIndices(k1, k2, k1+1);   // k1---k2---k1+1
-            }
-
-            if(i != (stackCount-1))
-            {
-                addIndices(k1+1, k2, k2+1); // k1+1---k2---k2+1
-            }
-
-            // vertical lines for all stacks
-            lineIndices.push_back(k1);
-            lineIndices.push_back(k2);
-            if(i != 0)  // horizontal lines except 1st stack
-            {
-                lineIndices.push_back(k1);
-                lineIndices.push_back(k1 + 1);
-            }
-        }
-    }
-
-    // generate interleaved vertex array as well
-    buildInterleavedVertices();
-
-    // change up axis from Z-axis to the given
-    if(this->upAxis != 3)
-        changeUpAxis(3, this->upAxis);
-}
 
 
 
@@ -553,9 +362,10 @@ void Sphere::buildInterleavedVertices()
         interleavedVertices.push_back(vertices[i+2]);
 
 
-        interleavedVertices.push_back(1.0f);
-        interleavedVertices.push_back(0.0f);
-        interleavedVertices.push_back(1.0f);
+        interleavedVertices.push_back(color[0]);
+        interleavedVertices.push_back(color[1]);
+        interleavedVertices.push_back(color[2]);
+        interleavedVertices.push_back(color[3]);
 
         // interleavedVertices.push_back(texCoords[j]);
         // interleavedVertices.push_back(texCoords[j+1]);

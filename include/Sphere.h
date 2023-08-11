@@ -21,7 +21,7 @@ class Sphere
 {
 public:
     // ctor/dtor
-    Sphere(float radius=1.0f, int sectorCount=18, int stackCount=9, bool smooth=true, int up=3);
+    Sphere(float radius=1.0f, int sectorCount=18, int stackCount=9, int up=3, glm::vec4 color_param = { 0.0f, 0.0f, 1.0f, 1.0f });
     ~Sphere() {}
 
     // getters/setters
@@ -61,10 +61,6 @@ public:
     int getInterleavedStride() const                { return interleavedStride; }   // should be 32 bytes
     const float* getInterleavedVertices() const     { return interleavedVertices.data(); }
 
-    // draw in VertexArray mode
-    void draw() const;                                  // draw surface
-    void drawLines(const float lineColor[4]) const;     // draw lines only
-    void drawWithLines(const float lineColor[4]) const; // draw surface and lines
 
     // debug
     void printSelf() const;
@@ -97,7 +93,8 @@ private:
     std::vector<float> texCoords;
     std::vector<unsigned int> indices;
     std::vector<unsigned int> lineIndices;
-
+    //color
+    glm::vec4 color;
     // interleaved
     std::vector<float> interleavedVertices;
     int interleavedStride;                  // # of bytes to hop to the next vertex (should be 32 bytes)

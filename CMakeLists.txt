@@ -11,10 +11,10 @@ set (WIN32_GLFW ${GLFW}/win32_thread.c ${GLFW}/win32_window.c ${GLFW}/win32_moni
 set (X11_GLFW  ${GLFW}/posix_thread.c  ${GLFW}/x11_window.c  ${GLFW}/x11_monitor.c ${GLFW}/x11_init.c  ${GLFW}/posix_time.c  ${GLFW}/linux_joystick.c  ${GLFW}/glx_context.c  ${GLFW}/xkb_unicode.c)
 
 include_directories ( ${GLFW_INCLUDE} ${INCLUDES})
-
+file(GLOB SOURCES ${SRC}/*.cpp)
 if(WIN32)
 
-	add_executable(fluid-sim ${SRC}/main.cpp ${SRC}/shader.cpp ${SRC}/glad.c ${COMMON_GLFW} ${WIN32_GLFW} )
+	add_executable(fluid-sim ${SOURCES} ${SRC}/glad.c ${COMMON_GLFW} ${WIN32_GLFW} )
 	target_link_libraries(fluid-sim gdi32 kernel32 user32)
 
 	set (CMAKE_CXX_FLAGS "-O3 -std=c++17")
@@ -23,7 +23,7 @@ endif (WIN32)
 
 if (UNIX)
 
-    add_executable(fluid-sim  ${SRC}/main.cpp  ${SRC}/camera.cpp ${SRC}/Sphere.cpp ${SRC}/shader.cpp ${SRC}/glad.c ${COMMON_GLFW} ${X11_GLFW})
+    add_executable(fluid-sim  ${SOURCES} ${SRC}/glad.c ${COMMON_GLFW} ${X11_GLFW})
 	target_link_libraries(fluid-sim pthread dl X11 m assimp)
 	set (CMAKE_CXX_FLAGS "-std=c++17")
 	add_compile_definitions(_GLFW_X11)
