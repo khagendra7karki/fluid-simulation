@@ -22,6 +22,7 @@ class Fluid {
 public:
     Fluid( void );
 
+    void simulate( void );
 
     float calcDensity( Vector3f );
     float calcPressure( float );

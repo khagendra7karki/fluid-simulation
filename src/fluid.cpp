@@ -13,6 +13,46 @@ Fluid::Fluid( void ) {
     }
 }
 
+void Fluid::simulate( void ) {
+    // Compute density and pressure
+    for (int i = 0; i < mParticles.size(); i++) {
+        mParticles[i].mDensity  = calcDensity(mParticles[i].mPosition);
+        mParticles[i].mPressure = calcPressure(mParticles[i].mDensity);
+    }
+
+    // Compute internal forces
+    for (int i = 0; i < mParticles.size(); i++) {
+        mParticles[i].mPressureForce  = calcPressureForce(i, mParticles[i].mDensity, mParticles[i].mPressure, mParticles[i].mPosition);
+        mParticles[i].mViscosityForce = calcViscosityForce(i, mParticles[i].mVelocity, mParticles[i].mPosition);
+    }
+
+    // Compute external forces
+    for (int i = 0; i < mParticles.size(); i++) {
+        mParticles[i].mGravitationalForce = calcGravitationalForce(mParticles[i].mDensity);
+        mParticles[i].mSurfaceNormal      = calcSurfaceNormal(mParticles[i].mPosition);
+        if (mParticles[i].mSurfaceNormal.length() >= THRESHOLD)
+            mParticles[i].mSurfaceTensionForce = calcSurfaceTensionForce(mParticles[i].mSurfaceNormal, mParticles[i].mPosition);
+        else
+            mParticles[i].mSurfaceTensionForce = Vector3f(0.0f, 0.0f, 0.0f);
+    }
+
+    // Time integration and collision handling
+    static float time = 0.0f;
+    time += TIME_STEP;
+    Vector3f totalForce;
+    for (int i = 0; i < mParticles.size(); i++) {
+        //totalForce = mParticles[i].mPressureForce + mParticles[i].mViscosityForce + mParticles[i].mSurfaceTensionForce;
+        totalForce = mParticles[i].mPressureForce + mParticles[i].mViscosityForce + mParticles[i].mGravitationalForce + mParticles[i].mSurfaceTensionForce;
+        employEulerIntegrator(mParticles[i], totalForce);
+
+        Vector3f contactPoint;
+        Vector3f unitSurfaceNormal;
+        if (detectCollision(mParticles[i], contactPoint, unitSurfaceNormal)) {
+            updateVelocity(mParticles[i].mVelocity, unitSurfaceNormal, (mParticles[i].mPosition - contactPoint).length());
+            mParticles[i].mPosition = contactPoint;
+        }
+    }
+}
 
 
 
@@ -70,7 +110,6 @@ void Fluid::employEulerIntegrator( Particle &particle, Vector3f totalForce ) {
     particle.mVelocity     = particle.mVelocity + particle.mAcceleration * TIME_STEP;
     particle.mPosition     = particle.mPosition + particle.mVelocity * TIME_STEP;
 }
-
 bool Fluid::detectCollision( Particle particle, Vector3f &contactPoint, Vector3f &unitSurfaceNormal ) {
     if (abs(particle.mPosition.x) <= BOX_SIZE / 2 && abs(particle.mPosition.y) <= BOX_SIZE / 2 && abs(particle.mPosition.z) <= BOX_SIZE / 2)
         return false;

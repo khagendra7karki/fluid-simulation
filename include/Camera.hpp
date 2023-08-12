@@ -11,7 +11,6 @@ public:
     ~Camera();
     void change_angle(double xpos, double ypos);
     void change_magnification( double xoffset, double yoffset );
-    void change_position( glm::vec3 );
     glm::mat4 lookat();
     glm::vec3 cameraFront, cameraPos, cameraUp;
     const float cameraSpeed;

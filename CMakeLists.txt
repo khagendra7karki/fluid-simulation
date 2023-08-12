@@ -25,6 +25,6 @@ if (UNIX)
 
     add_executable(fluid-sim  ${SOURCES} ${SRC}/glad.c ${COMMON_GLFW} ${X11_GLFW})
 	target_link_libraries(fluid-sim pthread dl X11 m assimp)
-	set (CMAKE_CXX_FLAGS "-std=c++17")
+	set (CMAKE_CXX_FLAGS "-O3 -std=c++17")
 	add_compile_definitions(_GLFW_X11)
 endif (UNIX)

@@ -37,20 +37,7 @@ void framebuffer_size_callback( GLFWwindow* window, int width, int height){
 void processInput( GLFWwindow *window ){
     if( glfwGetKey( window, GLFW_KEY_SPACE) == GLFW_PRESS ){
         glfwSetWindowShouldClose(window, true);
-    }
-
-    const float cameraSpeed = 0.05f;
-    if( glfwGetKey( window, GLFW_KEY_W ) == GLFW_PRESS)
-        c.cameraPos += c.cameraSpeed * c.cameraFront;
-    if( glfwGetKey ( window, GLFW_KEY_S) == GLFW_PRESS )
-        c.cameraPos -= c.cameraSpeed * c.cameraFront ;
-    
-    if( glfwGetKey( window, GLFW_KEY_A ) == GLFW_PRESS )
-        c.cameraPos -= glm::normalize( glm::cross( c.cameraFront, c.cameraUp )) * c.cameraSpeed;
-    
-    if( glfwGetKey( window, GLFW_KEY_D ) == GLFW_PRESS )
-        c.cameraPos += glm::normalize( glm::cross( c.cameraFront, c.cameraUp )) * c.cameraSpeed;
-    
+    }    
 }
 
 void mouse_callback( GLFWwindow* window, double xpos, double ypos ){
@@ -60,13 +47,12 @@ void mouse_callback( GLFWwindow* window, double xpos, double ypos ){
 
 void scroll_callback( GLFWwindow* window, double xoffset, double yoffset ){
     c.change_magnification( xoffset, yoffset );
-
 }
 
 
 int main(){ 
 
-    Sphere s(particleRadius, 18, 9,  3, {0.0f, 0.0f, 1.0f, 1.5f }) ;
+    Sphere s(particleRadius, 36, 18,  3, {0.0f, 0.0f, 1.0f, 1.5f }) ;
     const float* vertices = s.getInterleavedVertices();
     const unsigned int sizeOfVertices = s.getInterleavedVertexSize();
 
@@ -74,6 +60,7 @@ int main(){
     const unsigned int indicesSize = s.getIndexSize();
     const unsigned int indexCount = s.getIndexCount();
     
+    Fluid f;
 
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -104,9 +91,6 @@ int main(){
         return -1;
     }
 
-    //initialize texture
-    // int width, height, nrChannels;
-    // unsigned char *data = stbi_load("./resources/container.jpg", &width, &height, &nrChannels, 0 );
 
 
 
@@ -144,7 +128,9 @@ int main(){
     
 
     double startTime = glfwGetTime();
-    unsigned int frameRate= 0;
+    double frameStartTime = startTime;
+    float frameRate= 0;
+    unsigned int frames;
     while( !glfwWindowShouldClose( window ) ){
         processInput( window );
         
@@ -166,23 +152,12 @@ int main(){
 
 
         glBindVertexArray( VAO );
-        // transformLoc = glGetUniformLocation( shaderClass.ID, "model");
-        
-        // glDrawElements( GL_TRIANGLES,indexCount, GL_UNSIGNED_INT,0 );
-        // glDrawArrays( GL_TRIANGLES, 0, vertexCount );
 
-        for( int i = 0 ; i < 10 ; i++ ){
-            glm::mat4 i_newModel(1.0f);
-            i_newModel = glm::translate( i_newModel, glm::vec3( i * particleDiameter, 0.0f, 0.0f ));
-            for( int j = 0; j < 10; j++){
-                glm::mat4 j_newModel;
-                j_newModel = glm::translate( i_newModel, glm::vec3( 0.0f,j * particleDiameter, 0.0f ));
-                for( int k = 0 ; k < 10; k++){
-                    j_newModel = glm::translate( j_newModel, glm::vec3( 0.0f, 0.0f, particleDiameter ));
-                    shaderClass.setMat4( "model", j_newModel );
-                    glDrawElements( GL_TRIANGLES,indexCount, GL_UNSIGNED_INT,0 );
-                }
-            }
+        f.simulate();
+        for( int i = 0 ; i < f.mParticles.size() ; i++ ){
+            shaderClass.setMat4( "model", glm::translate( model, {f.mParticles[i].mPosition.x, f.mParticles[i].mPosition.y, f.mParticles[i].mPosition.z} ));
+            glDrawElements( GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0 );
+            
         }
 
         glfwSwapBuffers( window );
@@ -190,9 +165,17 @@ int main(){
         
         double endTime = glfwGetTime();
         double deltaTime = endTime - startTime;
-        
-        frameRate = (unsigned int)( 1.0 / deltaTime );
+        startTime = endTime;
+        frames++;
+        if( endTime - frameStartTime  > 60.0 ){
+            std::cout<<"The current frame rate is "<<frames <<std::endl;
+            frames = 0;
+            frameStartTime = endTime;
 
+        }
+        frameRate = ( 1.0 / deltaTime );
+        std::cout<<"The instantaneos frame rate is "<<frameRate<<std::endl;
+        std::cout<<"Time elapsed since last render "<<deltaTime <<std::endl;
     }
 
     glDeleteVertexArrays( 1, &VAO);
