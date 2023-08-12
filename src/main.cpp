@@ -130,7 +130,7 @@ int main(){
     double startTime = glfwGetTime();
     double frameStartTime = startTime;
     float frameRate= 0;
-    unsigned int frames;
+    unsigned int frames=0;
     while( !glfwWindowShouldClose( window ) ){
         processInput( window );
         

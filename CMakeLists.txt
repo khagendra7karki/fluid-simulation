@@ -17,7 +17,7 @@ if(WIN32)
 	add_executable(fluid-sim ${SOURCES} ${SRC}/glad.c ${COMMON_GLFW} ${WIN32_GLFW} )
 	target_link_libraries(fluid-sim gdi32 kernel32 user32)
 
-	set (CMAKE_CXX_FLAGS "-O3 -std=c++17")
+	set (CMAKE_CXX_FLAGS "-O2 -std=c++17")
 	add_compile_definitions(_GLFW_WIN32)
 endif (WIN32)
 

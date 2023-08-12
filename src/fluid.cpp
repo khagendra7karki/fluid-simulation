@@ -1,4 +1,6 @@
+//#include "math.h"
 #include "../include/Fluid.hpp"
+#define M_PI 3.14159265358979323846
 
 const float fluidVolume      = 1000 * MASS / REST_DENSITY;
 const float particleDiameter = powf(fluidVolume, 1.0f / 3.0f) / 10;
