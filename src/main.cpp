@@ -1,5 +1,3 @@
-#define STB_IMAGE_IMPLEMENTATION
-
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
 
@@ -148,11 +146,13 @@ int main(){
 
         shaderClass.setMat4( "view", view );
 
-        projection = glm::perspective( glm::radians( c.zoom ) , 800.0f/ 600.0f, 1.0f, 100.0f );
+        projection = glm::perspective( glm::radians( c.zoom ) , 800.0f/ 600.0f, 0.01f, 100.0f );
         shaderClass.setMat4( "projection", projection );
 
 
         glBindVertexArray( VAO );
+
+        glDrawArrays(GL_LINE_LOOP, 0, 9);
 
         f.simulate();
         for( int i = 0 ; i < f.mParticles.size() ; i++ ){

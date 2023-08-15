@@ -13,6 +13,7 @@
 #include <cmath>
 #include <Sphere.h>
 
+#define BOX_SIZES                   0.075f
 
 
 // constants //////////////////////////////////////////////////////////////////
@@ -175,6 +176,131 @@ void Sphere::buildInterleavedVertices()
 
     std::size_t i, j;
     std::size_t count = vertices.size();
+
+
+    interleavedVertices.push_back( -BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+
+    interleavedVertices.push_back( -BOX_SIZES );
+    interleavedVertices.push_back(  BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back(BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+
+    interleavedVertices.push_back( -BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+
+    interleavedVertices.push_back( -BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back(BOX_SIZES );
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+
+    interleavedVertices.push_back( -BOX_SIZES );
+    interleavedVertices.push_back(BOX_SIZES);
+    interleavedVertices.push_back(BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back(BOX_SIZES);
+    interleavedVertices.push_back(BOX_SIZES);
+
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+
+
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back(BOX_SIZES);
+
+
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+
     for(i = 0, j = 0; i < count; i += 3, j += 2)
     {
         interleavedVertices.push_back(vertices[i]);
