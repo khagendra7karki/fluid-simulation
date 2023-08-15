@@ -52,7 +52,8 @@ void scroll_callback( GLFWwindow* window, double xoffset, double yoffset ){
 
 int main(){ 
 
-    Sphere s(particleRadius, 36, 18,  3, {0.0f, 0.0f, 1.0f, 1.5f }) ;
+    Sphere s(particleRadius, 36, 18,   {0.0f, 0.0f, 1.0f, 1.5f }) ;
+    s.printSelf();
     const float* vertices = s.getInterleavedVertices();
     const unsigned int sizeOfVertices = s.getInterleavedVertexSize();
 
@@ -92,10 +93,7 @@ int main(){
     }
 
 
-
-
-
-    Shader shaderClass("./shaders/vertex.glsl", "./shaders/fragment.glsl");
+    Shader shaderClass("./shaders/sphere_vertex.glsl", "./shaders/sphere_fragment.glsl");
 
     unsigned int VBO , VAO, EBO;
     glGenVertexArrays( 1, &VAO);
@@ -111,11 +109,14 @@ int main(){
     glBufferData( GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_DYNAMIC_DRAW );
 
 
-    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), ( void * )0 );
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 10 * sizeof( float ), ( void * )0 );
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer( 1, 4, GL_FLOAT, GL_FALSE, 7 * sizeof( float ), ( void* )( 3 * sizeof( float )));
+    glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 10 * sizeof( float ), ( void* )( 3 * sizeof( float )));
     glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer( 2, 4, GL_FLOAT, GL_FALSE, 10 * sizeof( float ), ( void* )( 6 * sizeof( float )));
+    glEnableVertexAttribArray(2);
 
 
     glBindVertexArray(0);
@@ -147,7 +148,7 @@ int main(){
 
         shaderClass.setMat4( "view", view );
 
-        projection = glm::perspective( glm::radians( c.zoom ) , 800.0f/ 600.0f, 0.1f, 100.0f );
+        projection = glm::perspective( glm::radians( c.zoom ) , 800.0f/ 600.0f, 1.0f, 100.0f );
         shaderClass.setMat4( "projection", projection );
 
 

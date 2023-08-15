@@ -17,6 +17,7 @@ public:
     const float sensitivity;
     float zoom;
 private:
+    float radius;
     float lastX, lastY;
     float yaw , pitch;
     bool firstMouse;
