@@ -13,7 +13,7 @@
 #include <cmath>
 #include <Sphere.h>
 
-#define BOX_SIZES                   0.075f
+#define BOX_SIZES                   0.15f
 
 
 // constants //////////////////////////////////////////////////////////////////
@@ -166,10 +166,7 @@ void Sphere::buildVertices()
 
 
 
-///////////////////////////////////////////////////////////////////////////////
 // generate interleaved vertices: V/N/T
-// stride must be 32 bytes
-///////////////////////////////////////////////////////////////////////////////
 void Sphere::buildInterleavedVertices()
 {
     std::vector<float>().swap(interleavedVertices);
@@ -178,6 +175,9 @@ void Sphere::buildInterleavedVertices()
     std::size_t count = vertices.size();
 
 
+    //another vertex
+    //( -x, -y, -z )
+    //1
     interleavedVertices.push_back( -BOX_SIZES );
     interleavedVertices.push_back(-BOX_SIZES);
     interleavedVertices.push_back(-BOX_SIZES);
@@ -192,86 +192,29 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(color[2]);
     interleavedVertices.push_back(color[3]);
 
-
-    interleavedVertices.push_back( -BOX_SIZES );
-    interleavedVertices.push_back(  BOX_SIZES);
-    interleavedVertices.push_back(-BOX_SIZES);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
-
-
-    interleavedVertices.push_back( BOX_SIZES );
-    interleavedVertices.push_back(BOX_SIZES);
-    interleavedVertices.push_back(-BOX_SIZES);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
-
-
+    //another vertex
+    // ( -x , -y, z )
+    //2
     interleavedVertices.push_back( -BOX_SIZES );
     interleavedVertices.push_back(-BOX_SIZES);
-    interleavedVertices.push_back(-BOX_SIZES);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
-
-
-    interleavedVertices.push_back( -BOX_SIZES );
-    interleavedVertices.push_back(-BOX_SIZES);
-    interleavedVertices.push_back(BOX_SIZES );
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
-
-
-    interleavedVertices.push_back( -BOX_SIZES );
-    interleavedVertices.push_back(BOX_SIZES);
     interleavedVertices.push_back(BOX_SIZES);
 
     interleavedVertices.push_back(1.0f);
     interleavedVertices.push_back(1.0f);
     interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
     
-
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
-
-
-    interleavedVertices.push_back( BOX_SIZES );
-    interleavedVertices.push_back(BOX_SIZES);
-    interleavedVertices.push_back(BOX_SIZES);
-
+    //another vertex
+    // ( -x. -y , -z )
+    //3
+    interleavedVertices.push_back( -BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
 
     interleavedVertices.push_back(1.0f);
     interleavedVertices.push_back(1.0f);
@@ -283,22 +226,363 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(color[2]);
     interleavedVertices.push_back(color[3]);
 
-
-
+    //another vertex
+    // (x, -y, -z )
+    //4
     interleavedVertices.push_back( BOX_SIZES );
     interleavedVertices.push_back(-BOX_SIZES);
-    interleavedVertices.push_back(BOX_SIZES);
-
-
+    interleavedVertices.push_back(-BOX_SIZES);
 
     interleavedVertices.push_back(1.0f);
     interleavedVertices.push_back(1.0f);
     interleavedVertices.push_back(1.0f);
+
 
     interleavedVertices.push_back(color[0]);
     interleavedVertices.push_back(color[1]);
     interleavedVertices.push_back(color[2]);
     interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( -x. -y , -z )
+    //5
+    interleavedVertices.push_back( -BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    //( -x , y, -z )
+    //6
+    interleavedVertices.push_back( -BOX_SIZES );
+    interleavedVertices.push_back(BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( x, y , -z)
+    //7
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back(BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( x. -y, -z )
+    //8
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( x, y, -z )
+    //9
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back( BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( -x, y, -z )
+    //10
+    interleavedVertices.push_back(-BOX_SIZES );
+    interleavedVertices.push_back( BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( x, y, -z )
+    //11
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back( BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( x, y, z)
+    //12
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back( BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( x, -y, z )
+    //13
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( -x, -y,  z )
+    // 14
+    interleavedVertices.push_back( -BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( x, -y, z )
+    //15
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( x, y, z)
+    //16
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back( BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // (x, -y, z)
+    // 17
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( x, -y, -z )
+    //18
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( -x, y, z )
+    //19
+    interleavedVertices.push_back(-BOX_SIZES );
+    interleavedVertices.push_back( BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( -x, -y, z)
+    //20
+    interleavedVertices.push_back(-BOX_SIZES );
+    interleavedVertices.push_back(-BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // (-x, y, z )
+    //21
+    interleavedVertices.push_back( -BOX_SIZES );
+    interleavedVertices.push_back( BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    //(-x, y, -z)
+    //22
+    interleavedVertices.push_back(-BOX_SIZES );
+    interleavedVertices.push_back( BOX_SIZES);
+    interleavedVertices.push_back(-BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // (-x, y, z)
+    //23
+    interleavedVertices.push_back(-BOX_SIZES );
+    interleavedVertices.push_back( BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
+    //another vertex
+    // ( x, y, z )
+    //24
+    interleavedVertices.push_back( BOX_SIZES );
+    interleavedVertices.push_back( BOX_SIZES);
+    interleavedVertices.push_back( BOX_SIZES);
+
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+    interleavedVertices.push_back(1.0f);
+
+
+    interleavedVertices.push_back(color[0]);
+    interleavedVertices.push_back(color[1]);
+    interleavedVertices.push_back(color[2]);
+    interleavedVertices.push_back(color[3]);
+
 
 
     for(i = 0, j = 0; i < count; i += 3, j += 2)
@@ -319,7 +603,6 @@ void Sphere::buildInterleavedVertices()
 
     }
 }
-
 
 
 

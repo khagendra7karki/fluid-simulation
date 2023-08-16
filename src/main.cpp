@@ -152,7 +152,8 @@ int main(){
 
         glBindVertexArray( VAO );
 
-        glDrawArrays(GL_LINE_LOOP, 0, 9);
+        shaderClass.setMat4( "model", model );
+        glDrawArrays(GL_LINES, 0, 24);
 
         f.simulate();
         for( int i = 0 ; i < f.mParticles.size() ; i++ ){
