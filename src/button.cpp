@@ -1,7 +1,8 @@
 #include<Button.hpp> 
-
+#include <iostream>
 #include<glad/glad.h>
 #include<GLFW/glfw3.h>
+
 Button::Button(unsigned int vao, unsigned int vbo, unsigned int ebo){
     VAOS=vao;VBOS=vbo;EBOS=ebo;
     float vertices[] = {
@@ -39,9 +40,6 @@ Button::Button(unsigned int vao, unsigned int vbo, unsigned int ebo){
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 7 * sizeof(float), (void*)(3*sizeof(float)));
     glEnableVertexAttribArray(2);
+    glBindVertexArray( 0 );
 }
-Button::~Button(){
-    glDeleteBuffers(1, &VBOS);
-    glDeleteBuffers(1, &EBOS);
-    glDeleteVertexArrays(1, &VAOS);
-}
+Button::~Button(){}

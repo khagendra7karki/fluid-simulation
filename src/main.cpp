@@ -6,6 +6,7 @@
 #include<Camera.hpp>
 #include<utility.hpp>
 #include<Fluid.hpp>
+#include<Button.hpp>
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -94,17 +95,18 @@ int main(){
 
     Shader shaderClass("./shaders/sphere_vertex.glsl", "./shaders/sphere_fragment.glsl");
 
-    unsigned int VBO , VAO, EBO;
-    glGenVertexArrays( 1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
+    unsigned int VBO[2] , VAO[2], EBO[2];
+    glGenVertexArrays(2, VAO);
+    glGenBuffers(2, VBO);
+    glGenBuffers(2, EBO);
 
-    glBindVertexArray( VAO );
+
+    glBindVertexArray( VAO[0]);
     
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
     glBufferData( GL_ARRAY_BUFFER, sizeOfVertices , vertices, GL_DYNAMIC_DRAW);
     
-    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, EBO[0]);
     glBufferData( GL_ELEMENT_ARRAY_BUFFER, indicesSize, indices, GL_DYNAMIC_DRAW );
 
 
@@ -118,6 +120,8 @@ int main(){
     glEnableVertexAttribArray(2);
 
 
+    Button button(VAO[1],VBO[1],EBO[1]);
+
     glBindVertexArray(0);
 
 
@@ -130,6 +134,7 @@ int main(){
 
     double startTime = glfwGetTime();
     float frameRate= 0;
+
     while( !glfwWindowShouldClose( window ) ){
         processInput( window );
         
@@ -137,18 +142,25 @@ int main(){
         glClearColor( 1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        
-        glBindBuffer( GL_ARRAY_BUFFER, 0 );
+        // glBindBuffer( GL_ARRAY_BUFFER, 0 );
         
         shaderClass.use();
 
-        shaderClass.setMat4( "view", c.view );
-        shaderClass.setMat4( "projection", c.projection );
 
 
-        glBindVertexArray( VAO );
 
         shaderClass.setMat4( "model", model );
+        shaderClass.setMat4( "view",model );
+        shaderClass.setMat4( "projection", model); 
+        glBindVertexArray(VAO[1]);
+        glBindBuffer( GL_ARRAY_BUFFER, VBO[1] );
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        
+
+        shaderClass.setMat4( "view", c.view );
+        shaderClass.setMat4( "projection", c.projection );
+        glBindVertexArray( VAO[0] );
+        glBindBuffer( GL_ARRAY_BUFFER,VBO[0] );
         glDrawArrays(GL_LINES, 0, 24);
 
 
@@ -172,9 +184,9 @@ int main(){
         std::cout<<"The instantaneos frame rate is "<<frameRate<<std::endl;
     }
 
-    glDeleteVertexArrays( 1, &VAO);
-    glDeleteBuffers( 1, &VBO );
-    glDeleteBuffers( 1, &EBO );
+    glDeleteVertexArrays( 2, VAO);
+    glDeleteBuffers( 2 , VBO );
+    glDeleteBuffers( 2, EBO );
 
     std::cout<<f.mParticles.size()<<std::endl;
     shaderClass.close();

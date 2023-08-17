@@ -16,7 +16,7 @@ Fluid::Fluid( void ):GRAVITATIONAL_ACCELERATION( 0.0f, -9.81f, 0.0f),
     sphere.set( particleRadius, 36, 18, {0.21568f, 0.52549f, 0.870588f, 1.0f });
 
     for (float x = -particleRadius * 9; x <= particleRadius * 9; x += particleDiameter) {
-        for (float y = -particleRadius * 15; y <= particleRadius * 15; y += particleDiameter) {
+        for (float y = -particleRadius * 9; y <= particleRadius * 9; y += particleDiameter) {
             for (float z = -particleRadius * 9; z <= particleRadius * 9; z += particleDiameter)
                 mParticles.push_back(Particle(MASS, Vector3f(x, y, z)));
         }
