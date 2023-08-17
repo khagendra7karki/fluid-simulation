@@ -45,6 +45,7 @@ public:
     bool startSimulation;
 
     //constant parameters of the fluid
+    float particleRadius;
     float REST_DENSITY        =       998.29f;  //density at rest condition
     float MASS                =       0.02f;    //mass
     float VISCOSITY           =       3.5f;     //viscocity 

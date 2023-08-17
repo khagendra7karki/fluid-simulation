@@ -24,9 +24,6 @@ Button::Button(unsigned int vao, unsigned int vbo, unsigned int ebo){
         5, 6, 7   // second Triangle
     };
 
-    // glGenVertexArrays(1, &VAOS);
-    // glGenBuffers(1, &VBOS);
-    // glGenBuffers(1, &EBOS);
     // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
     glBindVertexArray(VAOS);
 

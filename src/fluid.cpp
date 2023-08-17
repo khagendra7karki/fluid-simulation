@@ -11,7 +11,7 @@ Fluid::Fluid( void ):GRAVITATIONAL_ACCELERATION( 0.0f, -9.81f, 0.0f),
     
     const float fluidVolume      = 1000 * MASS / REST_DENSITY;
     const float particleDiameter = powf(fluidVolume, 1.0f / 3.0f) / 10;
-    const float particleRadius   = particleDiameter / 2;
+    particleRadius   = particleDiameter / 2;
 
     sphere.set( particleRadius, 36, 18, {0.21568f, 0.52549f, 0.870588f, 1.0f });
 
@@ -74,6 +74,21 @@ void Fluid::simulate( void ) {
 void Fluid::addParticles( void ){
     
     return;
+}
+
+void Fluid::resetSimulation( void ){
+    std::vector<Particle >().swap(mParticles);      //delete all the existing particles
+    startSimulation = false;                        // stop the simulation after this
+
+    //reinitialize the particles 
+    for (float x = -particleRadius * 9; x <= particleRadius * 9; x += 2 * particleRadius) {
+        for (float y = -particleRadius * 9; y <= particleRadius * 9; y += 2 * particleRadius) {
+            for (float z = -particleRadius * 9; z <= particleRadius * 9; z += 2 * particleRadius )
+                mParticles.push_back(Particle(MASS, Vector3f(x, y, z)));
+        }
+    }
+
+ 
 }
 
 

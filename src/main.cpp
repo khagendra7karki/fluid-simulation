@@ -32,6 +32,9 @@ void processInput( GLFWwindow *window ){
         std::cout<<f.startSimulation<<std::endl;
     }
 
+    if( glfwGetKey( window, GLFW_KEY_X ) == GLFW_PRESS ){
+        f.resetSimulation();
+    }
 }
 
 void mouse_callback( GLFWwindow* window, double xpos, double ypos ){
@@ -145,9 +148,6 @@ int main(){
         // glBindBuffer( GL_ARRAY_BUFFER, 0 );
         
         shaderClass.use();
-
-
-
 
         shaderClass.setMat4( "model", model );
         shaderClass.setMat4( "view",model );
