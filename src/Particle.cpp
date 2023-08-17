@@ -13,4 +13,5 @@ Particle::Particle( float mass, Vector3f position ) {
     mGravitationalForce  = Vector3f(0.0f, 0.0f, 0.0f);
     mSurfaceNormal       = Vector3f(0.0f, 0.0f, 0.0f);
     mSurfaceTensionForce = Vector3f(0.0f, 0.0f, 0.0f);
+    isAtSurface = true;
 }

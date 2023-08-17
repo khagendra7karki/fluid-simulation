@@ -1,14 +1,22 @@
 //#include "math.h"
 #include "../include/Fluid.hpp"
+
+#ifndef M_PI
 #define M_PI 3.14159265358979323846
+#endif
 
-const float fluidVolume      = 1000 * MASS / REST_DENSITY;
-const float particleDiameter = powf(fluidVolume, 1.0f / 3.0f) / 10;
-const float particleRadius   = particleDiameter / 2;
+Fluid::Fluid( void ):GRAVITATIONAL_ACCELERATION( 0.0f, -9.81f, 0.0f),
+                     sphere(),
+                     startSimulation( false ) {
+    
+    const float fluidVolume      = 1000 * MASS / REST_DENSITY;
+    const float particleDiameter = powf(fluidVolume, 1.0f / 3.0f) / 10;
+    const float particleRadius   = particleDiameter / 2;
 
-Fluid::Fluid( void ) {
+    sphere.set( particleRadius, 36, 18, {0.21568f, 0.52549f, 0.870588f, 1.0f });
+
     for (float x = -particleRadius * 9; x <= particleRadius * 9; x += particleDiameter) {
-        for (float y = -particleRadius * 9; y <= particleRadius * 9; y += particleDiameter) {
+        for (float y = -particleRadius * 15; y <= particleRadius * 15; y += particleDiameter) {
             for (float z = -particleRadius * 9; z <= particleRadius * 9; z += particleDiameter)
                 mParticles.push_back(Particle(MASS, Vector3f(x, y, z)));
         }
@@ -17,45 +25,56 @@ Fluid::Fluid( void ) {
 
 void Fluid::simulate( void ) {
     // Compute density and pressure
-    for (int i = 0; i < mParticles.size(); i++) {
-        mParticles[i].mDensity  = calcDensity(mParticles[i].mPosition);
-        mParticles[i].mPressure = calcPressure(mParticles[i].mDensity);
-    }
+    if( startSimulation){
+        for (int i = 0; i < mParticles.size(); i++) {
+            mParticles[i].mDensity  = calcDensity(mParticles[i].mPosition);
+            mParticles[i].mPressure = calcPressure(mParticles[i].mDensity);
+        }
 
-    // Compute internal forces
-    for (int i = 0; i < mParticles.size(); i++) {
-        mParticles[i].mPressureForce  = calcPressureForce(i, mParticles[i].mDensity, mParticles[i].mPressure, mParticles[i].mPosition);
-        mParticles[i].mViscosityForce = calcViscosityForce(i, mParticles[i].mVelocity, mParticles[i].mPosition);
-    }
+        // Compute internal forces
+        for (int i = 0; i < mParticles.size(); i++) {
+            mParticles[i].mPressureForce  = calcPressureForce(i, mParticles[i].mDensity, mParticles[i].mPressure, mParticles[i].mPosition);
+            mParticles[i].mViscosityForce = calcViscosityForce(i, mParticles[i].mVelocity, mParticles[i].mPosition);
+        }
+        
+        // Compute external forces
+        for (int i = 0; i < mParticles.size(); i++) {
+            mParticles[i].mGravitationalForce = calcGravitationalForce(mParticles[i].mDensity);
+            mParticles[i].mSurfaceNormal      = calcSurfaceNormal(mParticles[i].mPosition);
+            if (mParticles[i].mSurfaceNormal.length() >= THRESHOLD){
+                mParticles[i].isAtSurface = true;
+                mParticles[i].mSurfaceTensionForce = calcSurfaceTensionForce(mParticles[i].mSurfaceNormal, mParticles[i].mPosition);
+            }
+            else{
+                mParticles[i].mSurfaceTensionForce = Vector3f(0.0f, 0.0f, 0.0f);
+                mParticles[i].isAtSurface = false;
+            }
+        }
 
-    // Compute external forces
-    for (int i = 0; i < mParticles.size(); i++) {
-        mParticles[i].mGravitationalForce = calcGravitationalForce(mParticles[i].mDensity);
-        mParticles[i].mSurfaceNormal      = calcSurfaceNormal(mParticles[i].mPosition);
-        if (mParticles[i].mSurfaceNormal.length() >= THRESHOLD)
-            mParticles[i].mSurfaceTensionForce = calcSurfaceTensionForce(mParticles[i].mSurfaceNormal, mParticles[i].mPosition);
-        else
-            mParticles[i].mSurfaceTensionForce = Vector3f(0.0f, 0.0f, 0.0f);
-    }
+        // Time integration and collision handling
+        static float time = 0.0f;
+        time += TIME_STEP;
+        Vector3f totalForce;
+        for (int i = 0; i < mParticles.size(); i++) {
+            //totalForce = mParticles[i].mPressureForce + mParticles[i].mViscosityForce + mParticles[i].mSurfaceTensionForce;
+            totalForce = mParticles[i].mPressureForce + mParticles[i].mViscosityForce + mParticles[i].mGravitationalForce + mParticles[i].mSurfaceTensionForce;
+            employEulerIntegrator(mParticles[i], totalForce);
 
-    // Time integration and collision handling
-    static float time = 0.0f;
-    time += TIME_STEP;
-    Vector3f totalForce;
-    for (int i = 0; i < mParticles.size(); i++) {
-        //totalForce = mParticles[i].mPressureForce + mParticles[i].mViscosityForce + mParticles[i].mSurfaceTensionForce;
-        totalForce = mParticles[i].mPressureForce + mParticles[i].mViscosityForce + mParticles[i].mGravitationalForce + mParticles[i].mSurfaceTensionForce;
-        employEulerIntegrator(mParticles[i], totalForce);
-
-        Vector3f contactPoint;
-        Vector3f unitSurfaceNormal;
-        if (detectCollision(mParticles[i], contactPoint, unitSurfaceNormal)) {
-            updateVelocity(mParticles[i].mVelocity, unitSurfaceNormal, (mParticles[i].mPosition - contactPoint).length());
-            mParticles[i].mPosition = contactPoint;
+            Vector3f contactPoint;
+            Vector3f unitSurfaceNormal;
+            if (mParticles[i].isAtSurface && detectCollision(mParticles[i], contactPoint, unitSurfaceNormal)) {
+                updateVelocity(mParticles[i].mVelocity, unitSurfaceNormal, (mParticles[i].mPosition - contactPoint).length());
+                mParticles[i].mPosition = contactPoint;
+            }
         }
     }
 }
 
+
+void Fluid::addParticles( void ){
+    
+    return;
+}
 
 
 float Fluid::calcDensity( Vector3f position ) {
@@ -185,7 +204,6 @@ bool Fluid::detectCollision( Particle particle, Vector3f &contactPoint, Vector3f
     }
     return true;
 }
-
 void Fluid::updateVelocity( Vector3f &velocity, Vector3f unitSurfaceNormal, float penetrationDepth ) {
     velocity = velocity - unitSurfaceNormal * (1 + RESTITUTION * penetrationDepth / (TIME_STEP * velocity.length())) * velocity.dot(unitSurfaceNormal);
 }

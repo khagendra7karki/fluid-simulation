@@ -19,6 +19,7 @@ public:
     Vector3f mGravitationalForce;
     Vector3f mSurfaceNormal;
     Vector3f mSurfaceTensionForce;
+    bool isAtSurface;
 };
 
 #endif

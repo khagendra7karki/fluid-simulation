@@ -2,12 +2,8 @@
 #include<GLFW/glfw3.h>
 
 #include<Shader.hpp>
-#include<iostream>
-#include<glm/glm.hpp>
-#include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
 #include<Camera.hpp>
-#include<Sphere.h>
 #include<utility.hpp>
 #include<Fluid.hpp>
 
@@ -15,31 +11,31 @@
 #define WINDOW_HEIGHT 600
 
 
-float alphaValue = 0.1f; // Set the desired alpha value (transparency) here
-
-const float fluidVolume = 1000 * MASS / REST_DENSITY;
-const float particleDiameter = powf( fluidVolume, 1.0f / 3.0f ) / 10;
-const float particleRadius = particleDiameter / 2.0f;
-
 
 
 Camera c( WINDOW_WIDTH, WINDOW_HEIGHT );
+Fluid f;
 
 void framebuffer_size_callback( GLFWwindow* window, int width, int height){
     glViewport( 0, 0, width , height);
+    
 }
-
-
 
 
 void processInput( GLFWwindow *window ){
     if( glfwGetKey( window, GLFW_KEY_SPACE) == GLFW_PRESS ){
         glfwSetWindowShouldClose(window, true);
     }    
+    if( glfwGetKey( window, GLFW_KEY_S) == GLFW_PRESS ){
+        f.startSimulation = !f.startSimulation;
+        std::cout<<f.startSimulation<<std::endl;
+    }
+
 }
 
 void mouse_callback( GLFWwindow* window, double xpos, double ypos ){
-    c.change_angle( xpos, ypos );
+    if( c.isMouseClicked )
+        c.change_angle( xpos, ypos );
 }
 
 
@@ -47,28 +43,31 @@ void scroll_callback( GLFWwindow* window, double xoffset, double yoffset ){
     c.change_magnification( xoffset, yoffset );
 }
 
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+        c.isMouseClicked = true;
+    }
+    else if( button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE ) 
+        c.isMouseClicked = false;
+}
+
 
 int main(){ 
-
-    Sphere s(particleRadius, 36, 18,   {0.0f, 0.0f, 1.0f, 1.5f }) ;
-    s.printSelf();
-    const float* vertices = s.getInterleavedVertices();
-    const unsigned int sizeOfVertices = s.getInterleavedVertexSize();
-
-    const unsigned int* indices = s.getIndices();
-    const unsigned int indicesSize = s.getIndexSize();
-    const unsigned int indexCount = s.getIndexCount();
     
-    Fluid f;
+    const float* vertices = f.sphere.getInterleavedVertices();
+    const unsigned int sizeOfVertices = f.sphere.getInterleavedVertexSize();
 
+    const unsigned int* indices = f.sphere.getIndices();
+    const unsigned int indicesSize = f.sphere.getIndexSize();
+    const unsigned int indexCount = f.sphere.getIndexCount();
+    
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    glm::mat4 view;
     glm::mat4 model = glm::mat4( 1.0f );
-    glm::mat4 projection;
 
     GLFWwindow* window = glfwCreateWindow( WINDOW_WIDTH, WINDOW_HEIGHT, "Fluid Simulation", NULL, NULL);
 
@@ -78,11 +77,13 @@ int main(){
         return -1;
     }
 
+    //make the window the current context of the thread
     glfwMakeContextCurrent( window );
+
+    //set callbacks
     glfwSetFramebufferSizeCallback( window, framebuffer_size_callback);
     glfwSetCursorPosCallback( window, mouse_callback );
-
-    // glfwSetInputMode( window, GLFW_CURSOR, GLFW_CURSOR_DISABLED );
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetScrollCallback( window, scroll_callback );
 
     if( !gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
@@ -120,16 +121,15 @@ int main(){
     glBindVertexArray(0);
 
 
+    //enable the requiried features
     glEnable( GL_DEPTH_TEST);
     glEnable( GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    // glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+    
     
 
     double startTime = glfwGetTime();
-    double frameStartTime = startTime;
     float frameRate= 0;
-    unsigned int frames=0;
     while( !glfwWindowShouldClose( window ) ){
         processInput( window );
         
@@ -142,12 +142,8 @@ int main(){
         
         shaderClass.use();
 
-        view = c.lookat();
-
-        shaderClass.setMat4( "view", view );
-
-        projection = glm::perspective( glm::radians( c.zoom ) , 800.0f/ 600.0f, 0.01f, 100.0f );
-        shaderClass.setMat4( "projection", projection );
+        shaderClass.setMat4( "view", c.view );
+        shaderClass.setMat4( "projection", c.projection );
 
 
         glBindVertexArray( VAO );
@@ -155,7 +151,11 @@ int main(){
         shaderClass.setMat4( "model", model );
         glDrawArrays(GL_LINES, 0, 24);
 
+
+        //calculate the next position of the fluid
         f.simulate();
+
+        //based on the position of the particles render the particle
         for( int i = 0 ; i < f.mParticles.size() ; i++ ){
             shaderClass.setMat4( "model", glm::translate( model, {f.mParticles[i].mPosition.x, f.mParticles[i].mPosition.y, f.mParticles[i].mPosition.z} ));
             glDrawElements( GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0 );
@@ -168,23 +168,15 @@ int main(){
         double endTime = glfwGetTime();
         double deltaTime = endTime - startTime;
         startTime = endTime;
-        frames++;
-        if( endTime - frameStartTime  > 60.0 ){
-            std::cout<<"The current frame rate is "<<frames <<std::endl;
-            frames = 0;
-            frameStartTime = endTime;
-
-        }
         frameRate = ( 1.0 / deltaTime );
         std::cout<<"The instantaneos frame rate is "<<frameRate<<std::endl;
-        std::cout<<"Time elapsed since last render "<<deltaTime <<std::endl;
     }
 
     glDeleteVertexArrays( 1, &VAO);
     glDeleteBuffers( 1, &VBO );
     glDeleteBuffers( 1, &EBO );
 
-
+    std::cout<<f.mParticles.size()<<std::endl;
     shaderClass.close();
     glfwTerminate();
     return 0;

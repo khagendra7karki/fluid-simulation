@@ -1,16 +1,3 @@
-///////////////////////////////////////////////////////////////////////////////
-// Sphere.h
-// ========
-// Sphere for OpenGL with (radius, sectors, stacks)
-// The min number of sectors is 3 and the min number of stacks are 2.
-// The default up axis is +Z axis. You can change the up axis with setUpAxis():
-// X=1, Y=2, Z=3.
-//
-//  AUTHOR: Song Ho Ahn (song.ahn@gmail.com)
-// CREATED: 2017-11-01
-// UPDATED: 2023-03-11
-///////////////////////////////////////////////////////////////////////////////
-
 #ifndef GEOMETRY_SPHERE_H
 #define GEOMETRY_SPHERE_H
 
@@ -21,14 +8,16 @@ class Sphere
 {
 public:
     // ctor/dtor
-    Sphere(float radius=1.0f, int sectorCount=18, int stackCount=9,  glm::vec4 color_param = { 0.0f, 0.0f, 1.0f, 1.0f });
+    Sphere();
+    Sphere(float radius, int sectorCount, int stackCount,  glm::vec4 color_param);
     ~Sphere() {}
-
+    //build function
+    // void build( void );
     // getters/setters
     float getRadius() const                 { return radius; }
     int getSectorCount() const              { return sectorCount; }
     int getStackCount() const               { return stackCount; }
-    void set(float radius, int sectorCount, int stackCount);
+    void set(float radius, int sectorCount, int stackCount, glm::vec4 color_param);
     void setRadius(float radius);
     void setSectorCount(int sectorCount);
     void setStackCount(int stackCount);

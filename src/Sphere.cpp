@@ -22,22 +22,21 @@ const int MIN_STACK_COUNT  = 2;
 
 
 
-///////////////////////////////////////////////////////////////////////////////
 // ctor
-///////////////////////////////////////////////////////////////////////////////
-Sphere::Sphere(float radius, int sectors, int stacks, glm::vec4 color_param)
+//default constructor
+Sphere::Sphere(){}
+
+Sphere::Sphere(float radius, int sectors, int stacks, glm::vec4 color_param):color( color_param)
 {
-    color = color_param;
-    set(radius, sectors, stacks);
+    set(radius, sectors, stacks, color_param);
 }
 
 
 
-///////////////////////////////////////////////////////////////////////////////
 // setters
-///////////////////////////////////////////////////////////////////////////////
-void Sphere::set(float radius, int sectors, int stacks)
+void Sphere::set(float radius, int sectors, int stacks, glm::vec4 color_param)
 {
+    color = color_param;
     if(radius > 0)
         this->radius = radius;
     this->sectorCount = sectors;
@@ -46,35 +45,32 @@ void Sphere::set(float radius, int sectors, int stacks)
     this->stackCount = stacks;
     if(stacks < MIN_STACK_COUNT)
         this->stackCount = MIN_STACK_COUNT;
-
     buildVertices();
 }
 
 void Sphere::setRadius(float radius)
 {
     if(radius != this->radius)
-        set(radius, sectorCount, stackCount);
+        set(radius, sectorCount, stackCount, color);
 }
 
 void Sphere::setSectorCount(int sectors)
 {
     if(sectors != this->sectorCount)
-        set(radius, sectors, stackCount);
+        set(radius, sectors, stackCount, color);
 }
 
 void Sphere::setStackCount(int stacks)
 {
     if(stacks != this->stackCount)
-        set(radius, sectorCount, stacks);
+        set(radius, sectorCount, stacks, color);
 }
 
 
 
 
 
-///////////////////////////////////////////////////////////////////////////////
 // print itself
-///////////////////////////////////////////////////////////////////////////////
 void Sphere::printSelf() const
 {
     std::cout << "===== Sphere =====\n"
@@ -87,11 +83,7 @@ void Sphere::printSelf() const
               << "  Normal Count: " << getNormalCount() << "\n";
 }
 
-
-///////////////////////////////////////////////////////////////////////////////
-// generate vertices with flat shading
-// each triangle is independent (no shared vertices)
-///////////////////////////////////////////////////////////////////////////////
+//build the vertices off of the data set
 void Sphere::buildVertices()
 {
     const float PI = acos(-1.0f);
@@ -174,6 +166,7 @@ void Sphere::buildInterleavedVertices()
     std::size_t i, j;
     std::size_t count = vertices.size();
 
+    glm::vec4 boxColor({0.0f, 0.0f, 0.0f, 1.0f });
 
     //another vertex
     //( -x, -y, -z )
@@ -187,10 +180,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( -x , -y, z )
@@ -204,10 +197,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
     
     //another vertex
     // ( -x. -y , -z )
@@ -221,10 +214,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // (x, -y, -z )
@@ -238,10 +231,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( -x. -y , -z )
@@ -255,10 +248,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     //( -x , y, -z )
@@ -272,10 +265,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( x, y , -z)
@@ -289,10 +282,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( x. -y, -z )
@@ -306,10 +299,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( x, y, -z )
@@ -323,10 +316,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( -x, y, -z )
@@ -340,10 +333,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( x, y, -z )
@@ -357,10 +350,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( x, y, z)
@@ -374,10 +367,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( x, -y, z )
@@ -391,10 +384,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( -x, -y,  z )
@@ -408,10 +401,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( x, -y, z )
@@ -425,10 +418,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( x, y, z)
@@ -442,10 +435,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // (x, -y, z)
@@ -459,10 +452,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( x, -y, -z )
@@ -476,10 +469,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( -x, y, z )
@@ -493,10 +486,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( -x, -y, z)
@@ -510,10 +503,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // (-x, y, z )
@@ -527,10 +520,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     //(-x, y, -z)
@@ -544,10 +537,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // (-x, y, z)
@@ -561,10 +554,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
     //another vertex
     // ( x, y, z )
@@ -578,10 +571,10 @@ void Sphere::buildInterleavedVertices()
     interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(color[0]);
-    interleavedVertices.push_back(color[1]);
-    interleavedVertices.push_back(color[2]);
-    interleavedVertices.push_back(color[3]);
+    interleavedVertices.push_back(boxColor[0]);
+    interleavedVertices.push_back(boxColor[1]);
+    interleavedVertices.push_back(boxColor[2]);
+    interleavedVertices.push_back(boxColor[3]);
 
 
 
@@ -642,5 +635,3 @@ void Sphere::addIndices(unsigned int i1, unsigned int i2, unsigned int i3)
     indices.push_back(i2);
     indices.push_back(i3);
 }
-
-
