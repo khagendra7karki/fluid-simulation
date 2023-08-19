@@ -14,4 +14,5 @@ Particle::Particle( float mass, Vector3f position ) {
     mSurfaceNormal       = Vector3f(0.0f, 0.0f, 0.0f);
     mSurfaceTensionForce = Vector3f(0.0f, 0.0f, 0.0f);
     isAtSurface = true;
+    isDroppedFirstTime = true;
 }

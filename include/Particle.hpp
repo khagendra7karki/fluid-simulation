@@ -20,6 +20,7 @@ public:
     Vector3f mSurfaceNormal;
     Vector3f mSurfaceTensionForce;
     bool isAtSurface;
+    bool isDroppedFirstTime;
 };
 
 #endif

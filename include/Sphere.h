@@ -7,13 +7,12 @@
 class Sphere
 {
 public:
-    // ctor/dtor
     Sphere();
     Sphere(float radius, int sectorCount, int stackCount,  glm::vec4 color_param);
+    
     ~Sphere() {}
-    //build function
-    // void build( void );
-    // getters/setters
+    
+    // getters and setters
     float getRadius() const                 { return radius; }
     int getSectorCount() const              { return sectorCount; }
     int getStackCount() const               { return stackCount; }
@@ -61,8 +60,10 @@ private:
     std::vector<float> vertices;
     std::vector<float> normals;
     std::vector<unsigned int> indices;
-    //color
+    
+    //color of the sphere
     glm::vec4 color;
+
     // interleaved
     std::vector<float> interleavedVertices;
     int interleavedStride;                  // # of bytes to hop to the next vertex (should be 32 bytes)

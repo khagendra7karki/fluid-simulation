@@ -1,6 +1,8 @@
 // Purpose: Camera class implementation'
 #include<Camera.hpp>
-Camera::Camera(int width, int height):radius(1.0f),
+Camera::Camera(int width, int height): vWidth( width ),
+                                    vHeight( height ),
+                                    radius(1.0f),
                                     lastX( width / 2), 
                                     lastY( height / 2 ), 
                                     yaw( -90.0f ),
@@ -9,18 +11,14 @@ Camera::Camera(int width, int height):radius(1.0f),
                                     cameraPos(0.0f, 0.0f, 1.0f),
                                     cameraUp(0.0f, 1.0f, 0.0f),
                                     sensitivity(0.28f),
-                                    firstMouse( true ),
                                     isMouseClicked( false ){
-    projection = glm::perspective( glm::radians( zoom ) , 800.0f/ 600.0f, 0.1f, 10000.0f );
+    projection = glm::perspective( glm::radians( zoom ) , float( vWidth )/ vHeight, 0.1f, 10000.0f );
     view = glm::lookAt(cameraPos, { 0.0f, 0.0f, 0.0f}, cameraUp );
 }
+
+
 void Camera::change_angle(double xpos, double ypos){
 
-    if( firstMouse ){
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
     
     float xoffset = xpos - lastX;
     float yoffset = lastY - ypos;
@@ -54,7 +52,12 @@ void Camera::change_magnification(double xoffset , double yoffset ){
     if( zoom > 45.0f ) zoom = 45.0f;
     
     //create the view matrix based on the new camera position
-    projection = glm::perspective( glm::radians( zoom ) , 800.0f/ 600.0f, 0.1f, 10000.0f );
+    projection = glm::perspective( glm::radians( zoom ) , float( vWidth)/ vHeight, 0.1f, 10000.0f );
+}
+
+void Camera::changeViewPort( unsigned int width, unsigned int height){
+    vHeight = height;
+    vWidth = width;
 }
 
 

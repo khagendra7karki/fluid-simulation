@@ -14,7 +14,7 @@ public:
     void simulate( void );
 
     //add more fluid particles
-    void addParticles( void );          //to be defined
+    void addParticles( Vector3f );          //to be defined
 
     //reset the simulation
     void resetSimulation( void );       //to be defined
@@ -28,7 +28,7 @@ public:
     Vector3f calcSurfaceNormal( Vector3f );
     Vector3f calcSurfaceTensionForce( Vector3f, Vector3f );
     void employEulerIntegrator( Particle &, Vector3f );
-    bool detectCollision( Particle, Vector3f &, Vector3f & );
+    bool detectCollision( Particle &, Vector3f &, Vector3f & );
     void updateVelocity( Vector3f &, Vector3f, float );
 
     float useDefaultKernel( Vector3f, float );
@@ -57,8 +57,11 @@ public:
     float SUPPORT_RADIUS      =       0.0457f;  //support radius of the smoothing kernel
     Vector3f GRAVITATIONAL_ACCELERATION;        //acceleration due to gravity
 
-    float TIME_STEP       =           0.005f;
+    float TIME_STEP       =           0.005f;      
     float BOX_SIZE        =           0.3f;
+    float X_BOX_SIZE;
+    float Y_BOX_SIZE;
+    float Z_BOX_SIZE;
 };
 
 #endif

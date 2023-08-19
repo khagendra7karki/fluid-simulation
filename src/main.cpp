@@ -8,33 +8,46 @@
 #include<Fluid.hpp>
 #include<Button.hpp>
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
+unsigned int WINDOW_WIDTH =  800;
+unsigned int WINDOW_HEIGHT = 600;
 
-
-
+bool switchReleased_S = true;
+bool switchReleased_X = true;
 
 Camera c( WINDOW_WIDTH, WINDOW_HEIGHT );
 Fluid f;
 
+
 void framebuffer_size_callback( GLFWwindow* window, int width, int height){
     glViewport( 0, 0, width , height);
+    c.changeViewPort( width, height );          //change the projection window parameters after viewport change
     
 }
 
 
 void processInput( GLFWwindow *window ){
+    
+    // 'SPACE' key to exit the application
     if( glfwGetKey( window, GLFW_KEY_SPACE) == GLFW_PRESS ){
         glfwSetWindowShouldClose(window, true);
     }    
-    if( glfwGetKey( window, GLFW_KEY_S) == GLFW_PRESS ){
+
+    // 'S' key to stop or resume the simulation
+    if( switchReleased_S && (glfwGetKey( window, GLFW_KEY_S) == GLFW_PRESS)  ){
+        switchReleased_S = false;
         f.startSimulation = !f.startSimulation;
         std::cout<<f.startSimulation<<std::endl;
     }
+    else if( !switchReleased_S &&  glfwGetKey( window, GLFW_KEY_S ) == GLFW_RELEASE ){
+        switchReleased_S = true;
+    }
 
-    if( glfwGetKey( window, GLFW_KEY_X ) == GLFW_PRESS ){
+    // 'X' key to reset the simulation
+    if(switchReleased_X && glfwGetKey( window, GLFW_KEY_X ) == GLFW_PRESS ){
+        switchReleased_X = false;   
         f.resetSimulation();
     }
+
 }
 
 void mouse_callback( GLFWwindow* window, double xpos, double ypos ){
@@ -49,10 +62,12 @@ void scroll_callback( GLFWwindow* window, double xoffset, double yoffset ){
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+    if ( !c.isMouseClicked && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+        // f.addParticles( Vector3f( 0.0f, 0.2f + f.BOX_SIZE, 0.0f ));
+        std::cout<<"Particles added"<<std::endl;
         c.isMouseClicked = true;
     }
-    else if( button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE ) 
+    else if( c.isMouseClicked && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE  ) 
         c.isMouseClicked = false;
 }
 
@@ -154,7 +169,7 @@ int main(){
         shaderClass.setMat4( "projection", model); 
         glBindVertexArray(VAO[1]);
         glBindBuffer( GL_ARRAY_BUFFER, VBO[1] );
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
 
         shaderClass.setMat4( "view", c.view );
@@ -172,6 +187,7 @@ int main(){
             shaderClass.setMat4( "model", glm::translate( model, {f.mParticles[i].mPosition.x, f.mParticles[i].mPosition.y, f.mParticles[i].mPosition.z} ));
             glDrawElements( GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0 );
             
+
         }
 
         glfwSwapBuffers( window );
@@ -181,6 +197,7 @@ int main(){
         double deltaTime = endTime - startTime;
         startTime = endTime;
         frameRate = ( 1.0 / deltaTime );
+        button.Update( frameRate );
         std::cout<<"The instantaneos frame rate is "<<frameRate<<std::endl;
     }
 

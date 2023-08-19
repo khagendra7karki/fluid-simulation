@@ -1,4 +1,3 @@
-//#include "math.h"
 #include "../include/Fluid.hpp"
 
 #ifndef M_PI
@@ -7,14 +6,19 @@
 
 Fluid::Fluid( void ):GRAVITATIONAL_ACCELERATION( 0.0f, -9.81f, 0.0f),
                      sphere(),
-                     startSimulation( false ) {
+                     startSimulation( false ) ,
+                     X_BOX_SIZE( BOX_SIZE ),
+                     Y_BOX_SIZE( BOX_SIZE ),
+                     Z_BOX_SIZE( BOX_SIZE ){
     
     const float fluidVolume      = 1000 * MASS / REST_DENSITY;
     const float particleDiameter = powf(fluidVolume, 1.0f / 3.0f) / 10;
     particleRadius   = particleDiameter / 2;
 
-    sphere.set( particleRadius, 36, 18, {0.21568f, 0.52549f, 0.870588f, 1.0f });
 
+    sphere.set( particleRadius, 36, 18, {0.21568f, 0.52549f, 0.870588f, 1.0f });    //set the params of the sphere
+
+    //start out with 1000 particles, 10 X 10 X 10
     for (float x = -particleRadius * 9; x <= particleRadius * 9; x += particleDiameter) {
         for (float y = -particleRadius * 9; y <= particleRadius * 9; y += particleDiameter) {
             for (float z = -particleRadius * 9; z <= particleRadius * 9; z += particleDiameter)
@@ -52,8 +56,6 @@ void Fluid::simulate( void ) {
         }
 
         // Time integration and collision handling
-        static float time = 0.0f;
-        time += TIME_STEP;
         Vector3f totalForce;
         for (int i = 0; i < mParticles.size(); i++) {
             //totalForce = mParticles[i].mPressureForce + mParticles[i].mViscosityForce + mParticles[i].mSurfaceTensionForce;
@@ -71,14 +73,20 @@ void Fluid::simulate( void ) {
 }
 
 
-void Fluid::addParticles( void ){
-    
-    return;
+void Fluid::addParticles( Vector3f center ){
+
+    //At the set location add the particles 
+    for (float x = -particleRadius * 2; x <= particleRadius * 2; x += 2 * particleRadius) {
+        for (float y = -particleRadius * 2; y <= particleRadius * 2; y += 2 * particleRadius) {
+            for (float z = -particleRadius * 2; z <= particleRadius * 2; z += 2 * particleRadius )
+                mParticles.push_back(Particle(MASS, Vector3f(x, y, z) + center));
+        }
+    }
 }
 
 void Fluid::resetSimulation( void ){
     std::vector<Particle >().swap(mParticles);      //delete all the existing particles
-    startSimulation = false;                        // stop the simulation after this
+    startSimulation = false;                        // stop the simulation after resetting
 
     //reinitialize the particles 
     for (float x = -particleRadius * 9; x <= particleRadius * 9; x += 2 * particleRadius) {
@@ -146,76 +154,95 @@ void Fluid::employEulerIntegrator( Particle &particle, Vector3f totalForce ) {
     particle.mVelocity     = particle.mVelocity + particle.mAcceleration * TIME_STEP;
     particle.mPosition     = particle.mPosition + particle.mVelocity * TIME_STEP;
 }
-bool Fluid::detectCollision( Particle particle, Vector3f &contactPoint, Vector3f &unitSurfaceNormal ) {
-    if (abs(particle.mPosition.x) <= BOX_SIZE / 2 && abs(particle.mPosition.y) <= BOX_SIZE / 2 && abs(particle.mPosition.z) <= BOX_SIZE / 2)
+bool Fluid::detectCollision( Particle &particle, Vector3f &contactPoint, Vector3f &unitSurfaceNormal ) {
+    
+    //return false if all the coordinates lie between the bounding box
+    if (abs(particle.mPosition.x) <= X_BOX_SIZE / 2 && abs(particle.mPosition.y) <= Y_BOX_SIZE / 2 && abs(particle.mPosition.z) <= Z_BOX_SIZE / 2)
         return false;
+    
+    // Vector3f tempCordinate ={ abs(particle.mPosition.x ) - X_BOX_SIZE / 2, abs( particle.mPosition.y ) - Y_BOX_SIZE / 2, abs(particle.mPosition.z ) - Z_BOX_SIZE / 2};
+    // Vector3f tempCordinate = particle.mPosition; 
 
-    char maxComponent = 'x';
-    float maxValue    = abs(particle.mPosition.x);
-    if (maxValue < abs(particle.mPosition.y)) {
-        maxComponent = 'y';
-        maxValue     = abs(particle.mPosition.y);
-    }
-    if (maxValue < abs(particle.mPosition.z)) {
-        maxComponent = 'z';
-        maxValue     = abs(particle.mPosition.z);
-    }
+    // float x, y, z;
+    // std::cout<<particle.mPosition<<std::endl;
+    
+    // x = abs(particle.mPosition.x  > 0 ?  (particle.mPosition.x - X_BOX_SIZE / 2.0f ) :(particle.mPosition.x +  X_BOX_SIZE / 2.0f));
+    // y = abs(particle.mPosition.y > 0 ?( particle.mPosition.y -Y_BOX_SIZE / 2.0f ):(particle.mPosition.y + Y_BOX_SIZE / 2.0f));
+    // z = abs(particle.mPosition.z > 0 ?(particle.mPosition.z -Z_BOX_SIZE / 2.0f ):( particle.mPosition.z +  Z_BOX_SIZE / 2.0f));
+
+    // std::cout<<x<< ", "<<y<<", "<<z<<std::endl;
+
+    // char maxComponent = particle.mPosition.x >  (particle.mPosition.y)?
+    //                     x >  z  ? 'x' : 'z' :
+    //                     y >  z  ? 'y' : 'z';
+    
+    char maxComponent = abs( particle.mPosition.x ) > abs(particle.mPosition.y) ?
+                        abs( particle.mPosition.x) > abs(particle.mPosition.z) ? 'x': 'y':
+                        abs(particle.mPosition.y ) > abs(particle.mPosition.z) ? 'y' : 'z';
+
+
+    // std::cout<<maxComponent<<std::endl;
+    
     // 'unitSurfaceNormal' is based on the current position component with the largest absolute value
-    switch (maxComponent) {
+    switch( maxComponent ){
         case 'x':
-            if (particle.mPosition.x < -BOX_SIZE / 2) {
-                contactPoint = particle.mPosition;            contactPoint.x = -BOX_SIZE / 2;
-                if (particle.mPosition.y < -BOX_SIZE / 2)     contactPoint.y = -BOX_SIZE / 2;
-                else if (particle.mPosition.y > BOX_SIZE / 2) contactPoint.y =  BOX_SIZE / 2;
-                if (particle.mPosition.z < -BOX_SIZE / 2)     contactPoint.z = -BOX_SIZE / 2;
-                else if (particle.mPosition.z > BOX_SIZE / 2) contactPoint.z =  BOX_SIZE / 2;
+            if (particle.mPosition.x < -X_BOX_SIZE / 2) {
+                contactPoint = particle.mPosition;            contactPoint.x = -X_BOX_SIZE / 2;
+                if (particle.mPosition.y < -Y_BOX_SIZE / 2)     contactPoint.y = -Y_BOX_SIZE / 2;
+                else if (particle.mPosition.y > Y_BOX_SIZE / 2) contactPoint.y =  Y_BOX_SIZE / 2;
+                if (particle.mPosition.z < -Z_BOX_SIZE / 2)     contactPoint.z = -Z_BOX_SIZE / 2;
+                else if (particle.mPosition.z > Z_BOX_SIZE / 2) contactPoint.z =  Z_BOX_SIZE / 2;
                 unitSurfaceNormal = Vector3f( 1.0f,  0.0f,  0.0f);
+                return true;
             }
-            else if (particle.mPosition.x > BOX_SIZE / 2) {
-                contactPoint = particle.mPosition;            contactPoint.x =  BOX_SIZE / 2;
-                if (particle.mPosition.y < -BOX_SIZE / 2)     contactPoint.y = -BOX_SIZE / 2;
-                else if (particle.mPosition.y > BOX_SIZE / 2) contactPoint.y =  BOX_SIZE / 2;
-                if (particle.mPosition.z < -BOX_SIZE / 2)     contactPoint.z = -BOX_SIZE / 2;
-                else if (particle.mPosition.z > BOX_SIZE / 2) contactPoint.z =  BOX_SIZE / 2;
+            else if( particle.mPosition.x > X_BOX_SIZE / 2 ){
+                contactPoint = particle.mPosition;            contactPoint.x =  X_BOX_SIZE / 2;
+                if (particle.mPosition.y < -Y_BOX_SIZE / 2)     contactPoint.y = -Y_BOX_SIZE / 2;
+                else if (particle.mPosition.y > Y_BOX_SIZE / 2) contactPoint.y =  Y_BOX_SIZE / 2;
+                if (particle.mPosition.z < -Z_BOX_SIZE / 2)     contactPoint.z = -Z_BOX_SIZE / 2;
+                else if (particle.mPosition.z > Z_BOX_SIZE / 2) contactPoint.z =  Z_BOX_SIZE / 2;
                 unitSurfaceNormal = Vector3f(-1.0f,  0.0f,  0.0f);
+                return true;
             }
             break;
         case 'y':
-            if (particle.mPosition.y < -BOX_SIZE / 2) {
-                contactPoint = particle.mPosition;            contactPoint.y = -BOX_SIZE / 2;
-                if (particle.mPosition.x < -BOX_SIZE / 2)     contactPoint.x = -BOX_SIZE / 2;
-                else if (particle.mPosition.x > BOX_SIZE / 2) contactPoint.x =  BOX_SIZE / 2;
-                if (particle.mPosition.z < -BOX_SIZE / 2)     contactPoint.z = -BOX_SIZE / 2;
-                else if (particle.mPosition.z > BOX_SIZE / 2) contactPoint.z =  BOX_SIZE / 2;
+            if (particle.mPosition.y < -Y_BOX_SIZE / 2) {
+                contactPoint = particle.mPosition;            contactPoint.y = -Y_BOX_SIZE / 2;
+                if (particle.mPosition.x < -X_BOX_SIZE / 2)     contactPoint.x = -X_BOX_SIZE / 2;
+                else if (particle.mPosition.x > X_BOX_SIZE / 2) contactPoint.x =  X_BOX_SIZE / 2;
+                if (particle.mPosition.z < -Z_BOX_SIZE / 2)     contactPoint.z = -Z_BOX_SIZE / 2;
+                else if (particle.mPosition.z > Z_BOX_SIZE / 2) contactPoint.z =  Z_BOX_SIZE / 2;
                 unitSurfaceNormal = Vector3f( 0.0f,  1.0f,  0.0f);
+                return true;
             }
-            else if (particle.mPosition.y > BOX_SIZE / 2) {
-                contactPoint = particle.mPosition;            contactPoint.y =  BOX_SIZE / 2;
-                if (particle.mPosition.x < -BOX_SIZE / 2)     contactPoint.x = -BOX_SIZE / 2;
-                else if (particle.mPosition.x > BOX_SIZE / 2) contactPoint.x =  BOX_SIZE / 2;
-                if (particle.mPosition.z < -BOX_SIZE / 2)     contactPoint.z = -BOX_SIZE / 2;
-                else if (particle.mPosition.z > BOX_SIZE / 2) contactPoint.z =  BOX_SIZE / 2;
+            else if ( particle.mPosition.y > Y_BOX_SIZE / 2){
+                contactPoint = particle.mPosition;            contactPoint.y =  Y_BOX_SIZE / 2;
+                if (particle.mPosition.x < -X_BOX_SIZE / 2)     contactPoint.x = -X_BOX_SIZE / 2;
+                else if (particle.mPosition.x > X_BOX_SIZE / 2) contactPoint.x =  X_BOX_SIZE / 2;
+                if (particle.mPosition.z < -Z_BOX_SIZE / 2)     contactPoint.z = -Z_BOX_SIZE / 2;
+                else if (particle.mPosition.z > Z_BOX_SIZE / 2) contactPoint.z =  Z_BOX_SIZE / 2;
                 unitSurfaceNormal = Vector3f( 0.0f, -1.0f,  0.0f);
+                return true;
             }
-            break;
-        case 'z':
-            if (particle.mPosition.z < -BOX_SIZE / 2) {
-                contactPoint = particle.mPosition;            contactPoint.z = -BOX_SIZE / 2;
-                if (particle.mPosition.x < -BOX_SIZE / 2)     contactPoint.x = -BOX_SIZE / 2;
-                else if (particle.mPosition.x > BOX_SIZE / 2) contactPoint.x =  BOX_SIZE / 2;
-                if (particle.mPosition.y < -BOX_SIZE / 2)     contactPoint.y = -BOX_SIZE / 2;
-                else if (particle.mPosition.y > BOX_SIZE / 2) contactPoint.y =  BOX_SIZE / 2;
+        default:
+            if (particle.mPosition.z < -Z_BOX_SIZE / 2) {
+                contactPoint = particle.mPosition;            contactPoint.z = -Z_BOX_SIZE / 2;
+                if (particle.mPosition.x < -X_BOX_SIZE / 2)     contactPoint.x = -X_BOX_SIZE / 2;
+                else if (particle.mPosition.x > X_BOX_SIZE / 2) contactPoint.x =  X_BOX_SIZE / 2;
+                if (particle.mPosition.y < -Y_BOX_SIZE / 2)     contactPoint.y = -Y_BOX_SIZE / 2;
+                else if (particle.mPosition.y > Y_BOX_SIZE / 2) contactPoint.y =  Y_BOX_SIZE / 2;
                 unitSurfaceNormal = Vector3f( 0.0f,  0.0f,  1.0f);
+                return true;
             }
-            else if (particle.mPosition.z > BOX_SIZE / 2) {
-                contactPoint = particle.mPosition;            contactPoint.z =  BOX_SIZE / 2;
-                if (particle.mPosition.x < -BOX_SIZE / 2)     contactPoint.x = -BOX_SIZE / 2;
-                else if (particle.mPosition.x > BOX_SIZE / 2) contactPoint.x =  BOX_SIZE / 2;
-                if (particle.mPosition.y < -BOX_SIZE / 2)     contactPoint.y = -BOX_SIZE / 2;
-                else if (particle.mPosition.y > BOX_SIZE / 2) contactPoint.y =  BOX_SIZE / 2;
+            else if( particle.mPosition.z >Z_BOX_SIZE / 2 ){
+                contactPoint = particle.mPosition;            contactPoint.z =  Z_BOX_SIZE / 2;
+                if (particle.mPosition.x < -X_BOX_SIZE / 2)     contactPoint.x = -X_BOX_SIZE / 2;
+                else if (particle.mPosition.x > X_BOX_SIZE / 2) contactPoint.x =  X_BOX_SIZE / 2;
+                if (particle.mPosition.y < -Y_BOX_SIZE / 2)     contactPoint.y = -Y_BOX_SIZE / 2;
+                else if (particle.mPosition.y > Y_BOX_SIZE / 2) contactPoint.y =  Y_BOX_SIZE / 2;
                 unitSurfaceNormal = Vector3f( 0.0f,  0.0f, -1.0f);
             }
-            break;
+
     }
     return true;
 }
