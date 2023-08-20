@@ -1,12 +1,14 @@
 #ifndef BUTTON_HEADER
 #define BUTTON_HEADER
-
+#include<vector>
+#include<iostream>
 class Button {
 private:
     unsigned int VBOS, EBOS;
 public:
     unsigned int VAOS;
-    float vertices[28];
+    std::vector<float> vertices;
+    // float vertices[40];
     unsigned int indices[6];
     Button(unsigned int vao, unsigned int vbo, unsigned int ebo);
     void Update(float val);

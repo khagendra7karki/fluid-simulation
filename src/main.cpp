@@ -76,7 +76,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     } 
     
     if ( !c.isRightClicked && button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
-        // f.addParticles({0.0f, 0.2f, 0.0f });
+        f.addParticles({0.0f, 0.4f, 0.0f });
         c.isRightClicked = true;
     }    
     else if( c.isRightClicked && button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE  ) 
@@ -186,9 +186,12 @@ int main(){
 
         shaderClass.setMat4( "view", c.view );
         shaderClass.setMat4( "projection", c.projection );
+        glDrawArrays(GL_LINES, 4, 24);
+
+
         glBindVertexArray( VAO[0] );
         glBindBuffer( GL_ARRAY_BUFFER,VBO[0] );
-        glDrawArrays(GL_LINES, 0, 24);
+        // glDrawArrays(GL_LINES, 0, 24);
 
 
         //calculate the next position of the fluid
@@ -198,8 +201,6 @@ int main(){
         for( int i = 0 ; i < f.mParticles.size() ; i++ ){
             shaderClass.setMat4( "model", glm::translate( model, {f.mParticles[i].mPosition.x, f.mParticles[i].mPosition.y, f.mParticles[i].mPosition.z} ));
             glDrawElements( GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0 );
-            
-
         }
 
         glfwSwapBuffers( window );

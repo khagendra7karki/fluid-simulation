@@ -8,6 +8,7 @@ private:
     /* data */
 public:
     Box(/* args */);
+    void buildVertices( std::vector<float>& destination );
     ~Box();
 };
 

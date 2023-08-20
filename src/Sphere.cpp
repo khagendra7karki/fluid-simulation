@@ -175,410 +175,410 @@ void Sphere::buildInterleavedVertices()
     //another vertex
     //( -x, -y, -z )
     //1
-    interleavedVertices.push_back( -X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
+    // interleavedVertices.push_back( -X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
 
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( -x , -y, z )
-    //2
-    interleavedVertices.push_back( -X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back(Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
 
 
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( -x , -y, z )
+    // //2
+    // interleavedVertices.push_back( -X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back(Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
     
-    //another vertex
-    // ( -x. -y , -z )
-    //3
-    interleavedVertices.push_back( -X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // (x, -y, -z )
-    //4
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( -x. -y , -z )
-    //5
-    interleavedVertices.push_back( -X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    //( -x , y, -z )
-    //6
-    interleavedVertices.push_back( -X_BOX_SIZE );
-    interleavedVertices.push_back(Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( x, y , -z)
-    //7
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back(Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( x. -y, -z )
-    //8
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( x, y, -z )
-    //9
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back( Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( -x, y, -z )
-    //10
-    interleavedVertices.push_back(-X_BOX_SIZE );
-    interleavedVertices.push_back( Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( x, y, -z )
-    //11
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back( Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( x, y, z)
-    //12
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back( Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( x, -y, z )
-    //13
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( -x, -y,  z )
-    // 14
-    interleavedVertices.push_back( -X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( x, -y, z )
-    //15
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( x, y, z)
-    //16
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back( Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // (x, -y, z)
-    // 17
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( x, -y, -z )
-    //18
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( -x, y, z )
-    //19
-    interleavedVertices.push_back(-X_BOX_SIZE );
-    interleavedVertices.push_back( Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( -x, -y, z)
-    //20
-    interleavedVertices.push_back(-X_BOX_SIZE );
-    interleavedVertices.push_back(-Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // (-x, y, z )
-    //21
-    interleavedVertices.push_back( -X_BOX_SIZE );
-    interleavedVertices.push_back( Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    //(-x, y, -z)
-    //22
-    interleavedVertices.push_back(-X_BOX_SIZE );
-    interleavedVertices.push_back( Y_BOX_SIZE);
-    interleavedVertices.push_back(-Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // (-x, y, z)
-    //23
-    interleavedVertices.push_back(-X_BOX_SIZE );
-    interleavedVertices.push_back( Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
-
-    //another vertex
-    // ( x, y, z )
-    //24
-    interleavedVertices.push_back( X_BOX_SIZE );
-    interleavedVertices.push_back( Y_BOX_SIZE);
-    interleavedVertices.push_back( Z_BOX_SIZE);
-
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-    interleavedVertices.push_back(1.0f);
-
-
-    interleavedVertices.push_back(boxColor[0]);
-    interleavedVertices.push_back(boxColor[1]);
-    interleavedVertices.push_back(boxColor[2]);
-    interleavedVertices.push_back(boxColor[3]);
+    // //another vertex
+    // // ( -x. -y , -z )
+    // //3
+    // interleavedVertices.push_back( -X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // (x, -y, -z )
+    // //4
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( -x. -y , -z )
+    // //5
+    // interleavedVertices.push_back( -X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // //( -x , y, -z )
+    // //6
+    // interleavedVertices.push_back( -X_BOX_SIZE );
+    // interleavedVertices.push_back(Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( x, y , -z)
+    // //7
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back(Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( x. -y, -z )
+    // //8
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( x, y, -z )
+    // //9
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back( Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( -x, y, -z )
+    // //10
+    // interleavedVertices.push_back(-X_BOX_SIZE );
+    // interleavedVertices.push_back( Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( x, y, -z )
+    // //11
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back( Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( x, y, z)
+    // //12
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back( Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( x, -y, z )
+    // //13
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( -x, -y,  z )
+    // // 14
+    // interleavedVertices.push_back( -X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( x, -y, z )
+    // //15
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( x, y, z)
+    // //16
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back( Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // (x, -y, z)
+    // // 17
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( x, -y, -z )
+    // //18
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( -x, y, z )
+    // //19
+    // interleavedVertices.push_back(-X_BOX_SIZE );
+    // interleavedVertices.push_back( Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( -x, -y, z)
+    // //20
+    // interleavedVertices.push_back(-X_BOX_SIZE );
+    // interleavedVertices.push_back(-Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // (-x, y, z )
+    // //21
+    // interleavedVertices.push_back( -X_BOX_SIZE );
+    // interleavedVertices.push_back( Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // //(-x, y, -z)
+    // //22
+    // interleavedVertices.push_back(-X_BOX_SIZE );
+    // interleavedVertices.push_back( Y_BOX_SIZE);
+    // interleavedVertices.push_back(-Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // (-x, y, z)
+    // //23
+    // interleavedVertices.push_back(-X_BOX_SIZE );
+    // interleavedVertices.push_back( Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
+
+    // //another vertex
+    // // ( x, y, z )
+    // //24
+    // interleavedVertices.push_back( X_BOX_SIZE );
+    // interleavedVertices.push_back( Y_BOX_SIZE);
+    // interleavedVertices.push_back( Z_BOX_SIZE);
+
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+    // interleavedVertices.push_back(1.0f);
+
+
+    // interleavedVertices.push_back(boxColor[0]);
+    // interleavedVertices.push_back(boxColor[1]);
+    // interleavedVertices.push_back(boxColor[2]);
+    // interleavedVertices.push_back(boxColor[3]);
 
 
 
