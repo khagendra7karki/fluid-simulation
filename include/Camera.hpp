@@ -14,6 +14,9 @@ public:
     void change_magnification( double xoffset, double yoffset );
     void changeViewPort( unsigned int width , unsigned int height );
     
+    glm::vec3 getArcballVector( double xpos, double ypos );
+
+    glm::vec3 vStart, vEnd;
 
     glm::vec3 cameraFront, cameraPos, cameraUp;
     const float sensitivity;

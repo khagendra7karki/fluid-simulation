@@ -1,5 +1,6 @@
 // Purpose: Camera class implementation'
 #include<Camera.hpp>
+#include<iostream>
 Camera::Camera(int width, int height): vWidth( width ),
                                     vHeight( height ),
                                     radius(1.0f),
@@ -18,40 +19,40 @@ Camera::Camera(int width, int height): vWidth( width ),
     view = glm::lookAt(cameraPos, { 0.0f, 0.0f, 0.0f}, cameraUp );
 }
 
-
 void Camera::change_angle(double xpos, double ypos){
 
     if( firstMouse ){
-        lastX = xpos;
-        lastY = ypos;
+        vStart = getArcballVector(xpos, ypos);
         firstMouse = false;
+    } else {
+        glm::vec3 vEnd = getArcballVector(xpos, ypos);
+        float angle = 2.0f * acos(std::min(1.0f, glm::dot(vStart, vEnd))); // angle of rotation around rotation axis
+        glm::vec3 rotAxis = glm::cross(vStart, vEnd);
+        glm::mat3 camera2object = glm::inverse(glm::mat3(view)); // Assuming 'view' is your view matrix
+        glm::vec3 rotAxisObj = camera2object * rotAxis;
+        view = glm::rotate(view, angle, rotAxisObj);
+        vStart = vEnd;
     }
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos;
 
     lastX = xpos;
     lastY = ypos;
-
-
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
-
-    pitch -= yoffset;
-    yaw += xoffset;
-
-    if( pitch > 89.0f ) pitch = 89.0f;
-    if( pitch < -89.0f ) pitch = -89.0f;
-
-
-    cameraPos.x = radius * cos( glm::radians( yaw ) * cos( glm::radians( pitch )));
-    cameraPos.y = radius * sin( glm::radians( pitch ));
-    cameraPos.z = radius * sin( glm::radians( yaw  )) * cos( glm::radians( pitch ));
-
-
-    //create the view matrix based on the new camera position
-    view = glm::lookAt(cameraPos, { 0.0f, 0.0f, 0.0f}, cameraUp );
-
 }
+
+
+
+glm::vec3 Camera::getArcballVector(double xpos, double ypos) {
+    glm::vec3 P = glm::vec3(1.0*xpos/vWidth*2 - 1.0,
+                            1.0*ypos/vHeight*2 - 1.0,
+                            0);
+    P.y = -P.y;
+    float OP_squared = P.x*P.x + P.y*P.y;
+    if (OP_squared <= 1*1)
+        P.z = sqrt(1*1 - OP_squared);  // Pythagore
+    else
+        P = glm::normalize(P);  // nearest point
+    return P;
+}
+
 void Camera::change_magnification(double xoffset , double yoffset ){
     zoom -= ( float ) yoffset;
     if( zoom < 1.0f ) zoom = 1.0f;
