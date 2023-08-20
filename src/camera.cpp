@@ -11,7 +11,9 @@ Camera::Camera(int width, int height): vWidth( width ),
                                     cameraPos(0.0f, 0.0f, 1.0f),
                                     cameraUp(0.0f, 1.0f, 0.0f),
                                     sensitivity(0.28f),
-                                    isMouseClicked( false ){
+                                    isRightClicked( false ),
+                                    firstMouse( true ),
+                                    isLeftClicked( false ){
     projection = glm::perspective( glm::radians( zoom ) , float( vWidth )/ vHeight, 0.1f, 10000.0f );
     view = glm::lookAt(cameraPos, { 0.0f, 0.0f, 0.0f}, cameraUp );
 }
@@ -19,7 +21,11 @@ Camera::Camera(int width, int height): vWidth( width ),
 
 void Camera::change_angle(double xpos, double ypos){
 
-    
+    if( firstMouse ){
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
     float xoffset = xpos - lastX;
     float yoffset = lastY - ypos;
 

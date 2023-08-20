@@ -4,8 +4,8 @@
 #include<GLFW/glfw3.h>
 
 Button::Button(unsigned int vao, unsigned int vbo, unsigned int ebo):vertices{
-        -0.8f,  0.8f, 0.0f, 1.0f, 0.5f, 0.2f, 1.0f, // top right
-        -0.8f, 0.75f, 0.0f,  1.0f, 0.5f, 0.2f, 1.0f,// bottom right
+        -0.78f,  0.8f, 0.0f, 1.0f, 0.5f, 0.2f, 1.0f, // top right
+        -0.78f, 0.75f, 0.0f,  1.0f, 0.5f, 0.2f, 1.0f,// bottom right
         -0.95f, 0.75f, 0.0f,  1.0f, 0.5f, 0.2f, 1.0f,// bottom left
         -0.95f,  0.8f, 0.0f,  1.0f, 0.5f, 0.2f, 1.0f,// top left 
 
@@ -34,7 +34,7 @@ Button::Button(unsigned int vao, unsigned int vbo, unsigned int ebo):vertices{
     glBindVertexArray( 0 );
 }
 void Button::Update(float val){
-    vertices[0] = vertices[7]=(0.95-0.8)*val/150.0; 
+    vertices[0] = vertices[7]= -0.8 + (0.15 * val/60.0f); 
      glBindVertexArray(VAOS);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBOS);

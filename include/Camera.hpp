@@ -18,8 +18,8 @@ public:
     glm::vec3 cameraFront, cameraPos, cameraUp;
     const float sensitivity;
     float zoom;
-    bool isMouseClicked;
-    
+    bool isRightClicked, isLeftClicked;
+    bool firstMouse;
     glm::mat4 projection; //camera saves the projection matrix
     glm::mat4 view;       // camera saves the view matrix 
 private:

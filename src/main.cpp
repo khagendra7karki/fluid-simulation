@@ -47,11 +47,14 @@ void processInput( GLFWwindow *window ){
         switchReleased_X = false;   
         f.resetSimulation();
     }
+    else if(!switchReleased_X && glfwGetKey( window, GLFW_KEY_X ) == GLFW_RELEASE ){
+        switchReleased_X = true;   
+    }
 
 }
 
 void mouse_callback( GLFWwindow* window, double xpos, double ypos ){
-    if( c.isMouseClicked )
+    if( c.isLeftClicked )
         c.change_angle( xpos, ypos );
 }
 
@@ -62,13 +65,22 @@ void scroll_callback( GLFWwindow* window, double xoffset, double yoffset ){
 
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-    if ( !c.isMouseClicked && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
+    if ( !c.isLeftClicked && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
         // f.addParticles( Vector3f( 0.0f, 0.2f + f.BOX_SIZE, 0.0f ));
         std::cout<<"Particles added"<<std::endl;
-        c.isMouseClicked = true;
+        c.isLeftClicked = true;
     }
-    else if( c.isMouseClicked && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE  ) 
-        c.isMouseClicked = false;
+    else if( c.isLeftClicked && button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE  ){
+        c.isLeftClicked = false;
+        c.firstMouse = true; 
+    } 
+    
+    if ( !c.isRightClicked && button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
+        f.addParticles({0.0f, 0.2f, 0.0f });
+        c.isRightClicked = true;
+    }    
+    else if( c.isRightClicked && button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE  ) 
+        c.isRightClicked = false;
 }
 
 
@@ -197,7 +209,8 @@ int main(){
         double deltaTime = endTime - startTime;
         startTime = endTime;
         frameRate = ( 1.0 / deltaTime );
-        button.Update( frameRate );
+        if ( f.startSimulation ) 
+            button.Update( frameRate );
         std::cout<<"The instantaneos frame rate is "<<frameRate<<std::endl;
     }
 
