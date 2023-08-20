@@ -1,6 +1,7 @@
 // Purpose: Camera class implementation'
 #include<Camera.hpp>
 #include<iostream>
+
 Camera::Camera(int width, int height): vWidth( width ),
                                     vHeight( height ),
                                     radius(1.0f),

@@ -7,45 +7,7 @@
 
 using namespace std;
 
-class Vector2i {
-    int x;
-    int y;
-
-    Vector2i() {}
-
-    Vector2i( int _x, int _y ) {
-        x = _x;
-        y = _y;
-    }
-};
-
-class Vector2f {
-    float x;
-    float y;
-
-    Vector2f() {}
-
-    Vector2f( float _x, float _y ) {
-        x = _x;
-        y = _y;
-    }
-};
-
-class Vector3i {
-    int x;
-    int y;
-    int z;
-
-    Vector3i() {}
-
-    Vector3i( int _x, int _y, int _z ) {
-        x = _x;
-        y = _y;
-        z = _z;
-    }
-};
-
-class Vector3f {
+class Vector3f{
 public:
     float x;
     float y;
@@ -127,7 +89,6 @@ public:
         Vector3f result(x / b,
                         y / b,
                         z / b);
-
         return result;
     }
 
