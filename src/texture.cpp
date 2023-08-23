@@ -12,24 +12,17 @@ void loadTexture(unsigned int VAO,unsigned int VBO,unsigned int EBO, unsigned in
     // ------------------------------------------------------------------
     float vertices[] = {
         // positions          // colors           // texture coords
-        // -0.5f,  0.9f, 0.0f,  1.0f, 1.0f, // top right
-        // -0.5f, 0.8f, 0.0f,  1.0f, 0.0f, // bottom right
-       // -0.95f, 0.8f, 0.0f,  0.0f, 0.0f, // bottom left
-       // -0.95f,  0.9f, 0.0f,  0.0f, 1.0f  // top left 
-        0.3f,  -0.85f, 0.0f,  1.0f, 1.0f, // top right
-         0.3f, -0.75f, 0.0f,  1.0f, 0.0f, // bottom right
-        -0.3f, -0.75f, 0.0f,  0.0f, 0.0f, // bottom left
-        -0.3f,  -0.85f, 0.0f,  0.0f, 1.0f  // top left 
+        0.252f,  -0.85f, 0.0f,  1.0f, 1.0f, // top right
+         0.25f, -0.75f, 0.0f,  1.0f, 0.0f, // bottom right
+        -0.25f, -0.75f, 0.0f,  0.0f, 0.0f, // bottom left
+        -0.25f,  -0.85f, 0.0f,  0.0f, 1.0f  // top left 
 
     };
     unsigned int indices[] = {  
         0, 1, 3, // first triangle
         1, 2, 3  // second triangle
     };
-    // unsigned int VBO, VAO, EBO;
-    // glGenVertexArrays(1, &VAO);
-    // glGenBuffers(1, &VBO);
-    // glGenBuffers(1, &EBO);
+
 
     glBindVertexArray(VAO);
 
@@ -59,14 +52,16 @@ void loadTexture(unsigned int VAO,unsigned int VBO,unsigned int EBO, unsigned in
     // set texture filtering parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
     // stbi_set_flip_vertically_on_load(true);
-    unsigned char *data = stbi_load("./resources/Frame.jpg", &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load("./resources/Frame.png", &width, &height, &nrChannels, STBI_rgb_alpha);
+    std::cout<<"The number of channels = "<<nrChannels<<std::endl;
     if (data)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else

@@ -4,12 +4,8 @@ out vec4 FragColor;
 in vec4 color;
 in vec2 textpos;
 
-uniform sampler2D texture;
-uniform int ntext;
+uniform sampler2D texture1;
 
 void main(){
-    if(ntext==1){
-        FragColor=texture(texture,textpos);
-    }else
-    FragColor = color;
+    FragColor=texture(texture1,textpos);
 }

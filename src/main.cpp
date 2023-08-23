@@ -73,10 +73,10 @@ int main(){
     glGenBuffers(3, VBO);
     glGenBuffers(3, EBO);
 
-    // loadTexture(VAO[2], VBO[2], EBO[2], texture);
+    loadTexture(VAO[2], VBO[2], EBO[2], texture);
 
     Shader shaderObject1("./shaders/sphere_vertex.glsl", "./shaders/sphere_fragment.glsl");
-    // Shader shaderObject2("./shaders/text_vertex.glsl", "./shaders/text_fragment.glsl");
+    Shader shaderObject2("./shaders/text_vertex.glsl", "./shaders/text_fragment.glsl");
   
     glBindVertexArray( VAO[0]);
     
@@ -119,8 +119,7 @@ int main(){
         glClearColor( 1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-        // glBindTexture(GL_TEXTURE_2D, texture );
-    
+
         shaderObject1.use();
 
         shaderObject1.setMat4( "model", model );
@@ -129,12 +128,13 @@ int main(){
         
         glBindVertexArray(VAO[1]);
         glBindBuffer( GL_ARRAY_BUFFER, VBO[1] );
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         
+        glDrawArrays(GL_LINES, 4, 8);
 
         shaderObject1.setMat4( "view", c.view );
         shaderObject1.setMat4( "projection", c.projection );
-        glDrawArrays(GL_LINES, 8, 24);
+        glDrawArrays(GL_LINES, 12, 24);
 
 
         glBindVertexArray( VAO[0] );
@@ -149,6 +149,12 @@ int main(){
             shaderObject1.setMat4( "model", glm::translate( model, {f.mParticles[i].mPosition.x, f.mParticles[i].mPosition.y, f.mParticles[i].mPosition.z} ));
             glDrawElements( GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0 );
         }
+        
+        glBindTexture(GL_TEXTURE_2D, texture );
+        shaderObject2.use();
+        glBindVertexArray( VAO[2]);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO[2]);
+        glDrawElements( GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers( window );
         glfwPollEvents();

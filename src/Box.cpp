@@ -8,6 +8,9 @@ void Box::buildVertices( std::vector<float>& destination ){
     float X_BOX_SIZE = 0.15f, Y_BOX_SIZE = 0.15f, Z_BOX_SIZE = 0.15f;
     float boxColor[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
+    //another vertex
+    // ( -x, -y, -z )
+    //1
     destination.push_back( -X_BOX_SIZE );
     destination.push_back(-Y_BOX_SIZE);
     destination.push_back(-Z_BOX_SIZE);
