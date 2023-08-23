@@ -9,7 +9,7 @@ public:
     unsigned int VAOS;
     std::vector<float> vertices;
     // float vertices[40];
-    unsigned int indices[6];
+    unsigned int indices[12];
     Button(unsigned int vao, unsigned int vbo, unsigned int ebo);
     void Update(float val);
     // ~Button();

@@ -5,18 +5,32 @@
 #include<Box.hpp>
 
 Button::Button(unsigned int vao, unsigned int vbo, unsigned int ebo):vertices{
-        -0.78f,  0.8f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  0.5f, 0.2f, 1.0f, // top right
-        -0.78f, 0.75f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  0.5f, 0.2f, 1.0f,// bottom right
-        -0.95f, 0.75f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  0.5f, 0.2f, 1.0f,// bottom left
-        -0.95f,  0.8f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  0.5f, 0.2f, 1.0f,// top left 
+        // -0.78f,  0.8f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  0.5f, 0.2f, 1.0f, // top right
+        // -0.78f, 0.75f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  0.5f, 0.2f, 1.0f,// bottom right
+        // -0.95f, 0.75f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  0.5f, 0.2f, 1.0f,// bottom left
+        // -0.95f,  0.8f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f,  0.5f, 0.2f, 1.0f,// top left 
+
+        -0.3f, -0.9f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.5f, 0.2f, 1.0f, // top right
+        -0.3f, -0.97f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.5f, 0.2f, 1.0f, // bottom right
+        -0.3f, -0.97f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.5f, 0.2f, 1.0f, // bottom left
+        -0.3f, -0.9f,  0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.5f, 0.2f, 1.0f,  // top left 
+       
+         0.32f, -0.88f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, // top right
+         0.32f, -0.99f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom right
+        -0.32f, -0.99f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left
+        -0.32f, -0.88f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1.0f  // top left
 
 
     },indices{  // note that we start from 0!
         0, 1, 3,  // first Triangle
         1, 2, 3,   // second Triangle
 
+        4, 5, 7,  // first Triangle
+        5, 6, 7,   // second Triangle
        
-    },VAOS(vao),VBOS(vbo),EBOS(ebo){
+    },VAOS(vao),
+    VBOS(vbo),
+    EBOS(ebo){
     
     Box b;
     b.buildVertices( vertices );
@@ -42,8 +56,8 @@ Button::Button(unsigned int vao, unsigned int vbo, unsigned int ebo):vertices{
     glBindVertexArray( 0 );
 }
 void Button::Update(float val){
-    vertices[0] = -0.8 + (0.15 * val/60.0f); 
-    vertices[10]= -0.8 + (0.15 * val/60.0f); 
+    vertices[0] = 0.28-((0.28+0.28)*val/60.0); 
+    vertices[10]= 0.28-((0.28+0.28)*val/60.0); 
 
     glBindVertexArray(VAOS);
 
