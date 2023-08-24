@@ -3,6 +3,7 @@
 <div align='center'>
     <img src='demo.gif' width = '600px'>
 </div>
+
 ## Build
 Refer to the CMakeLists.txt ( should support Linux and Windows ) for now, will update the detailed buid instruction later
 
