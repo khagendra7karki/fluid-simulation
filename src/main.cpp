@@ -237,7 +237,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
     } 
     
     if ( !c.isRightClicked && button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS){
-        f.addParticles({0.0f, 0.4f, 0.0f });
+        f.addParticles({0.0f, 0.35f, 0.0f });
         c.isRightClicked = true;
     }    
     else if( c.isRightClicked && button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE  ) 
