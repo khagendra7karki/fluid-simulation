@@ -1,5 +1,5 @@
-# fluid-simulation
-## SPH based fluid simulation
+# Fluid Simulation
+A SPH ( Smoothed Particle Hydrodynamics ) based fluid simulation
 <div align='center'>
     <img src='demo.gif' width = '600px'>
 </div>
